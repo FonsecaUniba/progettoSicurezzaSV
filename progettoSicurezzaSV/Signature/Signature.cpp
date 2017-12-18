@@ -4,9 +4,11 @@
 
 Signature::Signature()
 {
+	// Does Nothing
 }
 
 
 Signature::~Signature()
 {
+	// Does Nothing
 }

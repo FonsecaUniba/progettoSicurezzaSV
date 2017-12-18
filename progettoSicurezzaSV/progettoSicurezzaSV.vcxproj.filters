@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="File di origine\Signature">
+      <UniqueIdentifier>{e49c0b80-c506-4b75-9f2b-388140639f9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File di intestazione\Signature">
+      <UniqueIdentifier>{4c5465b1-549d-4f19-83d1-0d2166bedb0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File di origine\InputOutput">
+      <UniqueIdentifier>{a797dc4b-53fc-4812-8f24-da31c5644199}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File di intestazione\InputOutput">
+      <UniqueIdentifier>{ecb40b21-3cc7-449b-ac9e-e0ec604fdb38}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -24,10 +36,19 @@
     <ClInclude Include="resource.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
-    <ClInclude Include="Instant.h">
+    <ClInclude Include="InputOutput\FileInput.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
-    <ClInclude Include="Signature.h">
+    <ClInclude Include="Signature\Instant.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="Signature\Signature.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="InputOutput\stdafx.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="Signature\stdafx.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,10 +59,13 @@
     <ClCompile Include="progettoSicurezzaSV.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
-    <ClCompile Include="Instant.cpp">
+    <ClCompile Include="InputOutput\FileInput.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
-    <ClCompile Include="Signature.cpp">
+    <ClCompile Include="Signature\Instant.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="Signature\Signature.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>
@@ -49,5 +73,8 @@
     <ResourceCompile Include="progettoSicurezzaSV.rc">
       <Filter>File di risorse</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="progettoSicurezzaSV.aps" />
   </ItemGroup>
 </Project>
