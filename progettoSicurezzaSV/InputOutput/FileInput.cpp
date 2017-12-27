@@ -1,17 +1,6 @@
 #include "stdafx.h"
 #include "FileInput.h"
 
-#include <iostream>
-#include <vector>
-#include <string>
-#include <sstream>
-#include <iterator>
-#include <filesystem>
-
-#include "../Signature/Instant.h"
-#include "../Signature/Signature.h"
-#include "../User.h"
-
 const int FIRST_CHARACTER = 0;
 
 const int X_POSITION = 0;
@@ -30,7 +19,7 @@ std::vector<std::string> split_string(std::string str) {
 	std::istringstream buf(str);
 	std::istream_iterator<std::string> beg(buf), end;
 
-	std::vector<std::string> tokens(beg, end); // done!
+	std::vector<std::string> tokens(beg, end);
 	return tokens;
 }
 
@@ -130,19 +119,24 @@ std::vector<Signature> read_all_signatures(std::string path, std::string user) {
 	return all_signatures;
 }
 
-//100 Users
 std::vector<User> read_all_users(bool isTraining) {
 	const int USER_SIZE = 100;
 
+	//Determines if training or testing phase, sets path accordingly
 	std::string path = (isTraining) ? TRAINING_PATH : TESTING_PATH ;
 
+	//Creates a vector of Users
 	std::vector<User> all_users;
 	all_users.reserve(USER_SIZE);
 
-	for (int i = 1; i <= 100; i++) {
+	//Iterates USER_SIZE times
+	for (int i = 1; i <= USER_SIZE; i++) {
+		//Creates new user
 		User* current_user = new User(i);
-		
+		//Generates a string which will contain the userID
 		std::string user;
+
+		//Pads UserID to 3 characters
 		if (i < 10) {
 			user = "00" + std::to_string(i);
 		}
@@ -153,6 +147,7 @@ std::vector<User> read_all_users(bool isTraining) {
 			user = std::to_string(i);
 		}
 
+		//Reads all signatures for an user and adds the user to the vector
 		current_user->user_signatures = read_all_signatures(path, user);
 		all_users.push_back(*current_user);
 	}

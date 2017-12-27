@@ -7,6 +7,9 @@ class Instant
 
 	/*
 		Signature's Instant representation as parameters
+
+		Author: Nicola Oreste Fonseca
+		Created on: 15 December 2017
 	*/
 
 public:

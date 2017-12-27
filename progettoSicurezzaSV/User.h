@@ -7,6 +7,9 @@ class User
 
 	/*
 		Class representing an User
+
+		Author: Nicola Oreste Fonseca
+		Created on: 23 December 2017
 	*/
 
 public:

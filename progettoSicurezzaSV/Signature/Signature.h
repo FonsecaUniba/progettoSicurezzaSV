@@ -7,7 +7,10 @@ class Signature
 {
 
 	/*
-		Class representing a Signature;
+		Class representing a Signature
+
+		Author: Nicola Oreste Fonseca
+		Created on: 18 December 2017
 	*/
 
 public:
