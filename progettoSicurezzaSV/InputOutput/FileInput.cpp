@@ -15,6 +15,8 @@ const std::string EXTENSION = ".sig";
 const std::string TRAINING_PATH = "Signatures/TrainingSubset";
 const std::string TESTING_PATH = "Signatures/TestingSubset";
 
+enum Columns : int {USER_ID, SIGNATURE_ID, GENUINE_FORGERY, ACCEPTED_REJECTED, OK_FR_FA};
+
 std::vector<std::string> split_string(std::string str) {
 	std::istringstream buf(str);
 	std::istream_iterator<std::string> beg(buf), end;
@@ -90,6 +92,7 @@ Signature read_signature(std::string file_to_read, bool is_genuine) //TODO CHANG
 		index++;
 	}
 
+	file.close();
 	return *current_signature;
 }
 
@@ -155,14 +158,135 @@ std::vector<User> read_all_users(bool isTraining) {
 	return all_users;
 }
 
-void print_results(std::string path, double threshold, std::vector<std::string> results) {
-	//TODO WRITE THIS
+
+/*
+- UserID
+- SignatureID
+- Genuine/Forgery
+- Accepted/Rejected
+- OK/FR/FA
+*/
+void print_results(std::string path, std::vector<std::string> results) {
+	// Declares Output Stream
+	ofstream output_stream;
+	
+	// Opens Stream
+	output_stream.open(path);
+	// Sets header
+	output_stream << "UserID,SignatureID,Genuine\\Forgery,Accepted\\Rejected,OK\\FR\\FA\n";
+	
+	// Prints Results
+	for (int i = 0; i < results.size(); i++) {
+		output_stream << results[i] << "\n";
+	}
+
+	//Closes Stream
+	output_stream.close();
 }
 
-void print_optimization(std::string threshold_path, std::string results_path, User current_user) {
-	//TODO WRITE THIS
+std::vector<std::string> split_by_comma(std::string str) {
+	std::vector<std::string> result;
+
+	std::stringstream ss(str);
+
+	std::string temp;
+
+	while (ss >> temp)
+	{
+		result.push_back(temp);
+
+		if (ss.peek() == ',')
+			ss.ignore();
+	}
+
+	return result;
 }
 
-double read_user_optimal(std::string path, User current_user) {
+std::string calculate_averages(double threshold, std::vector<std::vector<std::string>> file_lines) {
+	int total = file_lines.size();
+	int countFAR = 0;
+	int countFRR = 0;
+
+	for (int i = 0; i < file_lines.size; i++) {
+		std::string value = file_lines.at(i).at(OK_FR_FA);
+		if (value == "FR") {
+			countFRR++;
+		}
+		else if (value == "FA") {
+			countFAR++;
+		}
+	}
+
+	std::string FAR;
+	std::string FRR;
+
+	{
+		std::stringstream stream;
+		stream << std::fixed << std::setprecision(2) << (countFAR / total);
+		FAR = stream.str();
+	}
+
+	{
+		std::stringstream stream;
+		stream << std::fixed << std::setprecision(2) << (countFRR / total);
+		FRR = stream.str();
+	}
+
+	return std::to_string(threshold) + "," + FAR + "," + FRR + "\n";
+}
+
+/*
+	- Threshold
+	- FAR
+	- FRR
+*/
+void print_optimization(std::string threshold_path, std::string results_path, double first, double step, double stop) {
+	// Declares output_stream
+	ofstream output_stream;
+	// Opens output stream
+	output_stream.open(results_path);
+	// Sets Header
+	output_stream << "Threshold,FAR,FRR\n";
+	
+	// Initializes index value
+	double index = first;
+
+	// While there are threshold tested
+	while (index <= stop) {
+		// String to store lines
+		std::string str;
+		// Vector to store file lines
+		std::vector<std::vector<std::string>> file_lines;
+
+		// Determines current_file_path
+		std::string current_path = threshold_path + std::to_string(index) + ".csv";
+		// Opens File
+		std::ifstream current_file(current_path);
+
+		// Read Line by Line
+		while (std::getline(current_file, str)) {
+			// Splits lines by comma
+			std::vector<std::string> data = split_by_comma(str);
+			// Adds line to file vector
+			file_lines.push_back(data);
+		}
+
+		// Closes File Stream
+		current_file.close();
+
+		output_stream << calculate_averages(index, file_lines);
+
+		// Clears Memory
+		file_lines.clear();
+
+		// Next File
+		index += step;
+	}
+
+	//Closes Output Stream
+	output_stream.close();
+}
+
+double read_user_optimal(std::string path) {
 	//TODO WRITE THIS
 }

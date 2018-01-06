@@ -6,6 +6,7 @@
 #include <vector>
 #include <sstream>
 #include <iterator>
+#include <iomanip>
 
 #include "../Signature/Instant.h"
 #include "../Signature/Signature.h"
@@ -61,7 +62,7 @@ std::vector<User> read_all_users(bool isTraining);
 	Creates a [Threshold].csv file in path containing the results
 	of a test executed at a given threshold value
 
-	path - path in which [Threshold.csv] will be stored
+	path - complete path to [Threshold].csv
 	threshold - threshold at which the test was executed
 	results - vector of results containing the following informations separated by comma
 		- UserID
@@ -71,7 +72,7 @@ std::vector<User> read_all_users(bool isTraining);
 		- OK/FR/FA
 		Ex: "99,1,Genuine,Accepted,OK"
 */
-void print_results(std::string path, double threshold, std::vector<std::string> results);
+void print_results(std::string path, std::vector<std::string> results);
 
 /*
 	Analizes all [Threshold].csv in threshold_path in order to
@@ -83,18 +84,19 @@ void print_results(std::string path, double threshold, std::vector<std::string> 
 		- FAR, the false acceptance rate at that threshold value;
 		- FRR, the false rejection rate at that thrashold value.
 
-	threshold_path - path in which [Threshold].csv are stored
-	result_path - path in which results are to be stored
-	current_user - user to read
+	threshold_path - complete path to [Threshold].csv
+	result_path - complete path to [UserID].csv in which results are to be stored
+	first - first Threshold value used
+	step - step at which threshold value increses
+	stop - last threshold value used
 */
-void print_optimization(std::string threshold_path, std::string results_path, User current_user);
+void print_optimization(std::string threshold_path, std::string results_path, double first, double step, double stop);
 
 /*
 	Reads the [UserID].csv in path, determines the threshold value at which
 	FAR (False Acceptance Rate) and FRR (False Rejection Rate) are minimal
 	and returns that threshold value.
 
-	path - path in which [UserID].csv is stored
-	current_user - user to read
+	path - complete path to [UserID].csv
 */
-double read_user_optimal(std::string path, User current_user);
+double read_user_optimal(std::string path);
