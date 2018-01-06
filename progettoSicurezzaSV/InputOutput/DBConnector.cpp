@@ -84,7 +84,7 @@ std::string loadModel(int user_id) {
 	return filepath;
 }
 
-float get_threshold(int user_id) {
+double get_threshold(int user_id) {
 	sql::Driver* driver = NULL;
 	sql::Connection* connection = NULL;
 	sql::Statement* stmt = NULL;
@@ -93,7 +93,7 @@ float get_threshold(int user_id) {
 	//Prepare Query
 	std::string query = "SELECT Threshold FROM svmodels WHERE UserID=" + std::to_string(user_id);
 
-	float result;
+	double result;
 
 	try {
 		//Connect to Database
@@ -123,7 +123,7 @@ float get_threshold(int user_id) {
 	return result;
 }
 
-void update_threshold(int user_id, float threshold) {
+void update_threshold(int user_id, double threshold) {
 	sql::Driver* driver = NULL;
 	sql::Connection* connection = NULL;
 	sql::Statement* stmt = NULL;

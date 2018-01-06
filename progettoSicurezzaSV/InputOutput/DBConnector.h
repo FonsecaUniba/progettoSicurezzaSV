@@ -40,7 +40,7 @@ std::string loadModel(int user_id);
 
 	user_id - ID for the user
 */
-float get_threshold(int user_id);
+double get_threshold(int user_id);
 
 /*
 	Changes the threshold for the specified user
@@ -48,4 +48,4 @@ float get_threshold(int user_id);
 	user_id - ID for the user
 	threshold - value to set as new threshold
 */
-void update_threshold(int user_id, float threshold);
+void update_threshold(int user_id, double threshold);

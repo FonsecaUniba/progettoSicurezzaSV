@@ -154,3 +154,15 @@ std::vector<User> read_all_users(bool isTraining) {
 
 	return all_users;
 }
+
+void print_results(std::string path, double threshold, std::vector<std::string> results) {
+	//TODO WRITE THIS
+}
+
+void print_optimization(std::string threshold_path, std::string results_path, User current_user) {
+	//TODO WRITE THIS
+}
+
+double read_user_optimal(std::string path, User current_user) {
+	//TODO WRITE THIS
+}
