@@ -7,6 +7,7 @@
 #include <sstream>
 #include <iterator>
 #include <iomanip>
+#include <math.h>
 
 #include "../Signature/Instant.h"
 #include "../Signature/Signature.h"
@@ -98,5 +99,6 @@ void print_optimization(std::string threshold_path, std::string results_path, do
 	and returns that threshold value.
 
 	path - complete path to [UserID].csv
+	max_far - maximum False Acceptance Rate allowed
 */
-double read_user_optimal(std::string path);
+double read_user_optimal(std::string path, double max_far);

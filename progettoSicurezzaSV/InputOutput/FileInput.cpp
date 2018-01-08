@@ -287,6 +287,83 @@ void print_optimization(std::string threshold_path, std::string results_path, do
 	output_stream.close();
 }
 
-double read_user_optimal(std::string path) {
-	//TODO WRITE THIS
+double read_user_optimal(std::string path, double max_far) {
+	// Defines the ROC graph as a struct
+	struct roc_graph {
+		// False Acceptance Rate
+		double far;
+		// True Acceptance Rate
+		double tar;
+		// Threshold
+		double threshold;
+		// Distance from FAR = 0.0 and TAR = 1.0
+		double distance_from_optimal;
+	};
+
+	//Optimal False Acceptance Rate Value
+	const double OPTIMAL_FAR = 0.0;
+	//Optimal True Acceptance Rate Value
+	const double OPTIMAL_TAR = 1.0;
+
+	// Vector to store graph
+	std::vector<roc_graph> user_data;
+	// Variable to temporarely store points
+	roc_graph point;
+
+	// File Columns
+	enum file_header { THRESHOLD, FAR, FRR };
+	// String to store file data
+	std::string str;
+	// Input Stream
+	std::ifstream file(path);
+	
+	//Is first line?
+	bool header = true;
+	// Read Line by Line
+	while (std::getline(file, str)) {
+		
+		if (header) {
+			//Skips first line
+			header = false;
+		}
+		else {
+			// Splits line by comma
+			std::vector<std::string> line = split_by_comma(str);
+
+			// Stores line info
+			point.threshold = std::stod( line[THRESHOLD] );
+			point.far = std::stod( line[FAR] );
+			point.tar = 1 - std::stod( line[FRR] );
+
+			// Calculates euclidean distance to optimal point
+			point.distance_from_optimal = sqrt( 
+				pow( (point.far - OPTIMAL_FAR) , 2 ) +
+				pow( (point.tar - OPTIMAL_TAR) , 2 ) );
+
+			// Stores point data
+			user_data.push_back(point);
+		}
+	}
+
+	// Closes File Stream
+	file.close();
+
+	// The optimal distance
+	int result_index = 0;
+
+	// Cycle user_data to find minimum distance allowed
+	for (int i = 1; i < user_data.size(); i++) {
+		if (user_data.at(i).far >= max_far) {
+			break;
+		}
+
+		//If current point has a lower distance than previous optimal
+		if (user_data.at(i).distance_from_optimal < user_data.at( result_index ).distance_from_optimal) {
+			// Store new index
+			result_index = i;
+		}
+	}
+
+	// Return threshold corresponding to result_index point
+	return user_data.at(result_index).threshold;
 }
