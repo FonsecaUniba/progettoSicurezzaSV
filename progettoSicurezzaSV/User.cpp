@@ -5,6 +5,7 @@
 User::User(int id)
 {
 	this->id = id;
+	this->threshold = 0.70;
 }
 
 
@@ -14,7 +15,6 @@ User::~User()
 
 int User::get_id() {
 	return this->id;
-	this->threshold = 0.70;
 }
 
 double User::get_threshold() {

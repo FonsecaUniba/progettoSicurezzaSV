@@ -40,15 +40,15 @@ Instant::~Instant()
 	Getters Section
 */
 
-float Instant::get_displacement(){
+double Instant::get_displacement(){
 	return this->displacement;
 }
 
-float Instant::get_velocity() {
+double Instant::get_velocity() {
 	return this->velocity;
 }
 
-float Instant::get_acceleration() {
+double Instant::get_acceleration() {
 	return this->acceleration;
 }
 

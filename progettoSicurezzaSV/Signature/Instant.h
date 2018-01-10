@@ -46,11 +46,11 @@ public:
 	~Instant();
 
 	// Returns the Instantaneous Displacement
-	float get_displacement();
+	double get_displacement();
 	// Returns the Instantaneous Velocity
-	float get_velocity();
+	double get_velocity();
 	// Returns the Instantaneous Acceleration
-	float get_acceleration();
+	double get_acceleration();
 	// Returns the Instantaneous Pressure
 	int get_pressure();
 	// Returns timestamp
@@ -58,11 +58,11 @@ public:
 
 private:
 	// Instantaneous Displacement
-	float displacement;
+	double displacement;
 	// Instantaneous Velocity
-	float velocity;
+	double velocity;
 	// Instantaneous Acceleration
-	float acceleration;
+	double acceleration;
 	// Instantaneous pressure
 	int pressure;
 	// Instant Time
