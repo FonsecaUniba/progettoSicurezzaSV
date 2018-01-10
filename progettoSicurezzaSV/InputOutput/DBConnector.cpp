@@ -10,7 +10,7 @@ const std::string passwd = "alpine";
 const std::string database = "signaturesvm";
 const std::string dbhost = "tcp://localhost:3306";
 
-void saveModel(int user_id, std::string model_path) {
+void save_model(int user_id, std::string model_path) {
 	sql::Driver* driver = NULL;
 	sql::Connection* connection = NULL;
 	sql::Statement* stmt = NULL;
@@ -44,7 +44,7 @@ void saveModel(int user_id, std::string model_path) {
 	delete connection;
 }
 
-std::string loadModel(int user_id) {
+std::string load_model(int user_id) {
 	sql::Driver* driver = NULL;
 	sql::Connection* connection = NULL;
 	sql::Statement* stmt = NULL;

@@ -26,14 +26,14 @@
 	user_id - ID for the user
 	model_path - Complete path to the file containing the model
 */
-void saveModel(int user_id, std::string model_path);
+void save_model(int user_id, std::string model_path);
 
 /*
 	Returns the path to the svm model
 
 	user_id - ID for the user
 */
-std::string loadModel(int user_id);
+std::string load_model(int user_id);
 
 /*
 	Returns the threshold for the specified user
