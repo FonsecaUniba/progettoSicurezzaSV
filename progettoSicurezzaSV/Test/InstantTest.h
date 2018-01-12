@@ -10,3 +10,12 @@
 	and checking if they correspond to expected values
 */
 void test_instant();
+
+/*
+	Executes all previous tests
+	
+	Useless, as there is only one test, but
+	it keeps test naming consistency between
+	files
+*/
+void test_instant_module();

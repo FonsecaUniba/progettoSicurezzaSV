@@ -25,7 +25,7 @@ std::vector<std::string> split_string(std::string str) {
 	return tokens;
 }
 
-Signature read_signature(std::string file_to_read, bool is_genuine) //TODO CHANGE_TYPE
+Signature read_signature(std::string file_to_read, bool is_genuine)
 {
 	//Creates object to store result Signature
 	Signature* current_signature = new Signature();
@@ -202,12 +202,12 @@ std::vector<std::string> split_by_comma(std::string str) {
 	return result;
 }
 
-std::string calculate_averages(double threshold, std::vector<std::vector<std::string>> file_lines) {
+std::string calculate_averages(double threshold, std::vector<std::vector<std::string>>& file_lines) {
 	int total = file_lines.size();
 	int countFAR = 0;
 	int countFRR = 0;
 
-	for (int i = 0; i < file_lines.size; i++) {
+	for (int i = 0; i < file_lines.size(); i++) {
 		std::string value = file_lines.at(i).at(OK_FR_FA);
 		if (value == "FR") {
 			countFRR++;

@@ -65,3 +65,7 @@ void test_instant() {
 		}
 	}
 }
+
+void test_instant_module() {
+	test_instant();
+}

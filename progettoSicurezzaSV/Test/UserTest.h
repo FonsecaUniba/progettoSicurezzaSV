@@ -16,3 +16,8 @@ void test_user();
 	and checking if it has been memorized
 */
 void test_set_threshold();
+
+/*
+	Executes all previous tests
+*/
+void test_user_module();

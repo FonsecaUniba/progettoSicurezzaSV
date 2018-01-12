@@ -35,3 +35,8 @@ void test_get_threshold();
 	comparing it to the new value
 */
 void test_update_threshold();
+
+/*
+	Executes all previous tests
+*/
+void test_dbconnector_module();

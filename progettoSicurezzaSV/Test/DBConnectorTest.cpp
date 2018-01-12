@@ -49,7 +49,7 @@ void test_save_model() {
 		}
 
 		//Prepare Query
-		std::string query = "DELETE FROM svmodels WHERE UserID=" + std::to_string(EXPECTED_USER_ID);
+		query = "DELETE FROM svmodels WHERE UserID=" + std::to_string(EXPECTED_USER_ID);
 
 		//Execute Query
 		stmt = connection->createStatement();
@@ -210,4 +210,14 @@ void test_update_threshold() {
 		cout << "DBConnectorTest::test_update_threshold Threshold Mismatch" << endl;
 		cout << "Expected " << EXPECTED_THRESHOLD << " but got " << returned_threshold << endl << endl;
 	}
+}
+
+void test_dbconnector_module() {
+	test_save_model();
+
+	test_load_model();
+
+	test_get_threshold();
+
+	test_update_threshold();
 }

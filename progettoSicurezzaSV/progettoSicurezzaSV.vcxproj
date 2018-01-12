@@ -167,6 +167,7 @@
     <ClInclude Include="SVMConnector.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Test\DBConnectorTest.h" />
+    <ClInclude Include="Test\FileInputTest.h" />
     <ClInclude Include="Test\InstantTest.h" />
     <ClInclude Include="Test\stdafx.h" />
     <ClInclude Include="Test\UserTest.h" />
@@ -186,6 +187,7 @@
     </ClCompile>
     <ClCompile Include="SVMConnector.cpp" />
     <ClCompile Include="Test\DBConnectorTest.cpp" />
+    <ClCompile Include="Test\FileInputTest.cpp" />
     <ClCompile Include="Test\InstantTest.cpp" />
     <ClCompile Include="Test\UserTest.cpp" />
     <ClCompile Include="User.cpp" />

@@ -76,6 +76,21 @@ std::vector<User> read_all_users(bool isTraining);
 void print_results(std::string path, std::vector<std::string> results);
 
 /*
+	Splits a string when a comma (",") occurs
+	The resulting substrings are stored in a vector
+
+	str - String to split in substrings
+
+	Example: "Name,Surname" -> {"Name", "Surname"}
+*/
+std::vector<std::string> split_by_comma(std::string str);
+
+/*
+
+*/
+std::string calculate_averages(double threshold, std::vector<std::vector<std::string>>& file_lines);
+
+/*
 	Analizes all [Threshold].csv in threshold_path in order to
 	determine the FAR (False Acceptance Rate) and FRR (False Rejection Rate)
 	and will store the results in a [UserID].csv in results_path

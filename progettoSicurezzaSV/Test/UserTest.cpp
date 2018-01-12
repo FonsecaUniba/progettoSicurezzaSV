@@ -49,3 +49,9 @@ void test_set_threshold() {
 		cout << "Expected " << EXPECTED_THRESHOLD << " but got " << returned_threshold << endl << endl;
 	}
 }
+
+void test_user_module() {
+	test_user();
+
+	test_set_threshold();
+}
