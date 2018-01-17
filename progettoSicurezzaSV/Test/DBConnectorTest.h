@@ -1,4 +1,8 @@
 #pragma once
+
+#ifndef DB_TEST
+#define DB_TEST
+
 #include <iostream>
 #include <math.h>
 
@@ -40,3 +44,5 @@ void test_update_threshold();
 	Executes all previous tests
 */
 void test_dbconnector_module();
+
+#endif //DB_TEST

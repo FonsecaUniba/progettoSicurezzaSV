@@ -1,4 +1,8 @@
 #pragma once
+
+#ifndef INSTANT_TEST
+#define INSTANT_TEST
+
 #include <math.h>
 #include <iostream>
 
@@ -19,3 +23,5 @@ void test_instant();
 	files
 */
 void test_instant_module();
+
+#endif //INSTANT_TEST

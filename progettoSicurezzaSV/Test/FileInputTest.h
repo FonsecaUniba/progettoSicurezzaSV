@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef FILE_TEST
+#define FILE_TEST
+
 #include <string>
 #include <vector>
 #include <iostream>
@@ -54,6 +57,11 @@ void test_print_results();
 */
 void test_split_by_comma();
 
+/*
+	Tests the average calculation by
+	setting up a .csv file and checking
+	if returned averages match expected values
+*/
 void test_calculate_averages();
 
 void test_print_optimization();
@@ -64,3 +72,5 @@ void test_read_user_optimal();
 	Executes all previous tests
 */
 void test_fileinput_module();
+
+#endif //FILE_TEST

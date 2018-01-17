@@ -171,7 +171,7 @@ void test_print_results() {
 
 	print_results(path, test_values);
 
-	std::cout << "FileInputTest::test_print_results Cannot output automated result" << endl;
+	std::cout << "FileInputTest::test_print_results Cannot output automated result" << std::endl;
 	std::cout << "Open Results and check if file was correctly created" << std::endl << std::endl;
 }
 
@@ -211,7 +211,7 @@ void test_calculate_averages() {
 		test_values.push_back("OK");
 
 		file_lines.push_back(test_values);
-		test_values.clear;
+		test_values.clear();
 	}
 
 	std::string returned_string = calculate_averages(threshold, file_lines);

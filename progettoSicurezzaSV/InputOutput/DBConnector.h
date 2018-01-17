@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef DB_CONNECTOR
+#define DB_CONNECTOR
+
 #include <string>
 #include <cppconn/driver.h>
 #include <cppconn/connection.h>
@@ -49,3 +52,5 @@ double get_threshold(int user_id);
 	threshold - value to set as new threshold
 */
 void update_threshold(int user_id, double threshold);
+
+#endif //DB_CONNECTOR

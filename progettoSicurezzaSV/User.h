@@ -1,4 +1,8 @@
 #pragma once
+
+#ifndef USER_CLASS
+#define USER_CLASS
+
 #include <vector>
 #include "Signature/Signature.h"
 
@@ -50,3 +54,4 @@ private:
 	double threshold;
 };
 
+#endif //USER_CLASS

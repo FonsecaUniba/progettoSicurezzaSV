@@ -17,6 +17,8 @@ const std::string TESTING_PATH = "Signatures/TestingSubset";
 
 enum Columns : int {USER_ID, SIGNATURE_ID, GENUINE_FORGERY, ACCEPTED_REJECTED, OK_FR_FA};
 
+using namespace std;
+
 std::vector<std::string> split_string(std::string str) {
 	std::istringstream buf(str);
 	std::istream_iterator<std::string> beg(buf), end;

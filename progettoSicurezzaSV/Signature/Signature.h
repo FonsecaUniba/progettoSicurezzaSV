@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef SIGNATURE_CLASS
+#define SIGNATURE_CLASS
+
 #include <vector>
 #include "Instant.h"
 
@@ -35,3 +38,4 @@ public:
 	bool is_genuine;
 };
 
+#endif SIGNATURE_CLASS

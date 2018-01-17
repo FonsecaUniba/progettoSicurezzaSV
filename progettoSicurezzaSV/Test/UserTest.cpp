@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "UserTest.h"
 
+using namespace std;
+
 void test_user() {
 	const int EXPECTED_ID = 1;
 	const double EXPECTED_THRESHOLD = 0.70;

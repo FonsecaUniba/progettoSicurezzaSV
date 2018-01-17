@@ -1,4 +1,8 @@
 #pragma once
+
+#ifndef USER_TEST
+#define USER_TEST
+
 #include <iostream>
 #include <math.h>
 
@@ -21,3 +25,5 @@ void test_set_threshold();
 	Executes all previous tests
 */
 void test_user_module();
+
+#endif //USER_TEST

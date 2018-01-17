@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef FILE_INPUT
+#define FILE_INPUT
+
 #include <fstream>
 #include <string>
 #include <iostream>
@@ -117,3 +120,5 @@ void print_optimization(std::string threshold_path, std::string results_path, do
 	max_far - maximum False Acceptance Rate allowed
 */
 double read_user_optimal(std::string path, double max_far);
+
+#endif //FILE_INPUT

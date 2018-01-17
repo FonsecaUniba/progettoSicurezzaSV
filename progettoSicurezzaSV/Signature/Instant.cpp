@@ -4,6 +4,10 @@
 
 Instant::Instant(int x0, int y0, int t0, int p, int x1, int y1, int t1)
 {
+	// Stores 2D representation
+	this->x = x0;
+	this->y = y0;
+
 	/*
 		Stores the timestamp
 	*/
@@ -36,9 +40,27 @@ Instant::~Instant()
 	// Does Nothing
 }
 
+std::string Instant::to_string() {
+	std::string result = "";
+	result += std::to_string(this->displacement) + ",";
+	result += std::to_string(this->velocity) + ",";
+	result += std::to_string(this->acceleration) + ",";
+	result += std::to_string(this->pressure);
+
+	return result;
+}
+
 /*
 	Getters Section
 */
+
+int Instant::get_x() {
+	return this->x;
+}
+
+int Instant::get_y() {
+	return this->y;
+}
 
 double Instant::get_displacement(){
 	return this->displacement;

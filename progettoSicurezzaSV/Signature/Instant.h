@@ -1,6 +1,9 @@
 #pragma once
 
-using namespace std;
+#ifndef INSTANT_CLASS
+#define INSTANT_CLASS
+
+#include <string>
 
 class Instant
 {
@@ -45,6 +48,19 @@ public:
 	//	Deconstructor for a Signature's Instant
 	~Instant();
 
+	/*
+		Returns a string containing displacement,
+		velocity, acceleration and pressure
+		separated by comma
+
+		Example "1, 1, 1, 5"
+	*/
+	std::string to_string();
+
+	// Returns Position X
+	int get_x();
+	// Returns Position Y
+	int get_y();
 	// Returns the Instantaneous Displacement
 	double get_displacement();
 	// Returns the Instantaneous Velocity
@@ -57,6 +73,10 @@ public:
 	int get_timestamp();
 
 private:
+	// Position X of Point, used for plotting
+	int x;
+	// Position Y of Point, used for plotting
+	int y;
 	// Instantaneous Displacement
 	double displacement;
 	// Instantaneous Velocity
@@ -69,3 +89,4 @@ private:
 	int timestamp;
 };
 
+#endif //INSTANT_CLASS
