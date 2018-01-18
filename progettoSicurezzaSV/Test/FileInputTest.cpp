@@ -149,7 +149,7 @@ void test_read_all_users() {
 }
 
 void test_print_results() {
-	std::string path = "Results/test_print_results.csv";
+	std::string path = "Results/UnitTest/test_print_results.csv";
 	std::vector<std::string> test_values;
 	
 	std::string str = "";
@@ -228,11 +228,75 @@ void test_calculate_averages() {
 }
 
 void test_print_optimization() {
-	//TODO write this
+	for (int i = 0; i <= 10; i++) {
+		double file_name = (i + 1) / 10;
+		std::string file_path = "Results/UnitTest/" + std::to_string(file_name) + ".csv";
+		
+		std::vector<std::string> file_lines;
+		std::string line = "";
+
+		for (int j = 0; j <= 10; j++) {
+			//Append data to file
+			line += std::to_string(i) + ",";
+			line += std::to_string(i) + ",";
+			line += ((i % 2) == 0) ? "Genuine," : "Forgery,";
+			line += ((i % 2) == 0) ? "Accepted," : "Rejected,";
+			line += "OK\n";
+
+			file_lines.push_back(line);
+		}
+
+		print_results(file_path, file_lines);
+		file_lines.clear();
+	}
+
+	std::string result_path = "Results/UnitTest/001.csv";
+	std::string threshold_path = "Results/UnitTest/";
+	print_optimization(threshold_path, result_path, 0.10, 0.10, 1.00);
+
+	std::cout << "FileInputTest::test_print_results Cannot output automated result" << std::endl;
+	std::cout << "Open Results and check if file was correctly created" << std::endl << std::endl;
 }
 
 void test_read_user_optimal() {
-	//TODO write this
+	for (int i = 0; i <= 10; i++) {
+		double file_name = (i + 1) / 10;
+		std::string file_path = "Results/UnitTest/" + std::to_string(file_name) + ".csv";
+
+		std::vector<std::string> file_lines;
+		std::string line = "";
+
+		for (int j = 0; j <= 10; j++) {
+			//Append data to file
+			line += std::to_string(i) + ",";
+			line += std::to_string(i) + ",";
+			line += ((i % 2) == 0) ? "Genuine," : "Forgery,";
+			line += ((i % 2) == 0) ? "Accepted," : "Rejected,";
+			line += "OK\n";
+
+			file_lines.push_back(line);
+		}
+
+		print_results(file_path, file_lines);
+		file_lines.clear();
+	}
+
+	std::string result_path = "Results/UnitTest/001.csv";
+	std::string threshold_path = "Results/UnitTest/";
+	print_optimization(threshold_path, result_path, 0.10, 0.10, 1.00);
+
+	double EXPECTED_RESULT = 1.00;
+	double returned_result = read_user_optimal(result_path, 0.20);
+
+	bool check_optimal = abs(EXPECTED_RESULT - returned_result) < 1e-6;
+
+	if (check_optimal) {
+		std::cout << "FileInputTest::read_user_optimal Everything OK" << std::endl << std::endl;
+	}
+	else {
+		std::cout << "FileInputTest::read_user_optimal Result Mismatch" << std::endl;
+		std::cout << "Expected " << EXPECTED_RESULT << " but got " << returned_result << std::endl << std::endl;
+	}
 }
 void test_fileinput_module() {
 	test_split_string();

@@ -3,6 +3,7 @@
 #ifndef FILE_TEST
 #define FILE_TEST
 
+#include <fstream>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -64,6 +65,12 @@ void test_split_by_comma();
 */
 void test_calculate_averages();
 
+/*
+	Tests the optimization printing by
+	creating static results files and
+	trying to calculate and print optimization
+	results
+*/
 void test_print_optimization();
 
 void test_read_user_optimal();

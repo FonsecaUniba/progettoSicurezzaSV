@@ -103,7 +103,7 @@ std::string calculate_averages(double threshold, std::vector<std::vector<std::st
 		- FAR, the false acceptance rate at that threshold value;
 		- FRR, the false rejection rate at that thrashold value.
 
-	threshold_path - complete path to [Threshold].csv
+	threshold_path - path to folder containing [Threshold].csv
 	result_path - complete path to [UserID].csv in which results are to be stored
 	first - first Threshold value used
 	step - step at which threshold value increses
