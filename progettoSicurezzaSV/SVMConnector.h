@@ -4,6 +4,9 @@
 #define SVM_CONNECTOR
 
 #include <vector>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/ml/ml.hpp>
 
 #include "InputOutput/DBConnector.h"
 
@@ -19,35 +22,42 @@
 */
 
 /*
-	Generates the SVM model for an User
-	Stores the model on the Database
-*/
-void generate_model(/*TODO Identify Parameters*/);
-
-/*
 	Trains the System to recognize an User
-	The SVM will be saved in /SVM/[UserID]
+	The SVM will be saved in /SVMs/[UserID].xml
 
 	to_train - User to train the system for
 */
 void train_svm(User to_train);
 
 /*
-	Predicts if a given Signature is Genuine or Forgery
+	Given a Signature and a user id,
+	loads the SVM and returns a vector
+	containing the distances between
+	each Instant and the hyperplane
 
 	userID - User to check Signature of
 	to_check - Signature to predict
-	threshold - Threshold at which the system will consider the Signature Genuine
 */
-std::vector<double> predict_value(int userID, Signature to_check, float threshold);
+std::vector<double> compute_distances(int userID, Signature to_check);
 
 /*
-	Predicts if a given Signature is Genuine or Forgery
-	The System will read the Threshold from the DB
+	Tests a user signature at a given
+	threshold
+
+	userID - User to check Signature of
+	to_check - Signature to predict
+	threshold - Threshold at which the signature is accepted
+*/
+bool test_signature(int userID, Signature to_check, double threshold);
+
+/*
+	Tests a user signature, the
+	threshold value will be taken from
+	the database
 
 	userID - User to check Signature of
 	to_check - Signature to predict
 */
-std::vector<double> predict_value(int userID, Signature to_check);
+bool test_signature(int userID, Signature to_check);
 
 #endif //SVM_CONNECTOR
