@@ -7,10 +7,8 @@
 #include <cppconn/driver.h>
 #include <cppconn/connection.h>
 #include <cppconn/exception.h>
-#include <cppconn/statement.h>
 #include <cppconn/prepared_statement.h>
 #include <cppconn/resultset.h>
-#include <cppconn/resultset_metadata.h>
 
 /*
 	Interface to connect the software to a mySQL Database

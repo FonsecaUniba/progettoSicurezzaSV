@@ -5,10 +5,10 @@
 This data is plain for academic purposes
 It will obviously be different in an actual system
 */
-const std::string user = "root";
-const std::string passwd = "alpine";
-const std::string database = "signaturesvm";
-const std::string dbhost = "tcp://localhost:3306";
+#define user "root"
+#define passwd "alpine"
+#define database "signaturesvm"
+#define dbhost "tcp://localhost:3306"
 
 using namespace std;
 
@@ -18,19 +18,20 @@ void test_save_model() {
 	const double EXPECTED_THRESHOLD = 0.70;
 	
 	save_model(EXPECTED_USER_ID, EXPECTED_PATH);
-
+	
+	
 	int returned_user_id;
 	std::string returned_model_path;
 	double returned_threshold;
-
+	
 	try {
 		sql::Driver* driver = NULL;
 		sql::Connection* connection = NULL;
-		sql::Statement* stmt = NULL;
+		sql::PreparedStatement* pstmt = NULL;
 		sql::ResultSet* res = NULL;
 
 		//Prepare Query
-		std::string query = "SELECT * FROM svmodels WHERE UserID=" + std::to_string(EXPECTED_USER_ID);
+		std::string query = "SELECT * FROM svmodels WHERE UserID=?" + std::to_string(EXPECTED_USER_ID);
 
 		//Connect to Database
 		driver = get_driver_instance();
@@ -38,8 +39,9 @@ void test_save_model() {
 		connection->setSchema(database);
 
 		//Execute Query
-		stmt = connection->createStatement();
-		res = stmt->executeQuery(query);
+		pstmt = connection->prepareStatement("SELECT * FROM svmodels WHERE UserID=?");
+		pstmt->setInt(1, EXPECTED_USER_ID);
+		res = pstmt->executeQuery();
 
 		//Save Threshold
 		while (res->next()) {
@@ -47,17 +49,18 @@ void test_save_model() {
 			returned_model_path = res->getString("Threshold");
 			returned_threshold = res->getDouble("Threshold");
 		}
-
+		
 		//Prepare Query
 		query = "DELETE FROM svmodels WHERE UserID=" + std::to_string(EXPECTED_USER_ID);
 
 		//Execute Query
-		stmt = connection->createStatement();
-		res = stmt->executeQuery(query);
+		pstmt = connection->prepareStatement("DELETE FROM svmodels WHERE UserID=?");
+		pstmt->setInt(1, EXPECTED_USER_ID);
+		pstmt->executeUpdate();
 
 		//Delete Pointers
 		delete res;
-		delete stmt;
+		delete pstmt;
 		delete connection;
 	}
 	catch (sql::SQLException& e) {
@@ -96,27 +99,30 @@ void test_load_model() {
 	save_model(EXPECTED_USER_ID, EXPECTED_PATH);
 	std::string returned_path = load_model(EXPECTED_USER_ID);
 
+	
 	try {
 		sql::Driver* driver = NULL;
 		sql::Connection* connection = NULL;
-		sql::Statement* stmt = NULL;
-		sql::ResultSet* res = NULL;
+		sql::PreparedStatement* pstmt = NULL;
 
-		//Prepare Query
-		std::string query = "DELETE FROM svmodels WHERE UserID=" + std::to_string(EXPECTED_USER_ID);
+		//Connect to Database
+		driver = get_driver_instance();
+		connection = driver->connect(dbhost, user, passwd);
+		connection->setSchema(database);
 
 		//Execute Query
-		stmt = connection->createStatement();
-		res = stmt->executeQuery(query);
+		pstmt = connection->prepareStatement("DELETE FROM svmodels WHERE UserID=?");
+		pstmt->setInt(1, EXPECTED_USER_ID);
+		pstmt->executeUpdate();
 
 		//Delete Pointers
-		delete res;
-		delete stmt;
+		delete pstmt;
 		delete connection;
 	}
 	catch (sql::SQLException& e) {
 		std::cout << e.what() << std::endl;
 	}
+
 
 	bool path_check = EXPECTED_PATH == returned_path;
 
@@ -137,27 +143,30 @@ void test_get_threshold() {
 	save_model(EXPECTED_USER_ID, EXPECTED_PATH);
 	double returned_threshold = get_threshold(EXPECTED_USER_ID);
 
+
 	try {
 		sql::Driver* driver = NULL;
 		sql::Connection* connection = NULL;
-		sql::Statement* stmt = NULL;
-		sql::ResultSet* res = NULL;
+		sql::PreparedStatement* pstmt = NULL;
 
-		//Prepare Query
-		std::string query = "DELETE FROM svmodels WHERE UserID=" + std::to_string(EXPECTED_USER_ID);
+		//Connect to Database
+		driver = get_driver_instance();
+		connection = driver->connect(dbhost, user, passwd);
+		connection->setSchema(database);
 
 		//Execute Query
-		stmt = connection->createStatement();
-		res = stmt->executeQuery(query);
+		pstmt = connection->prepareStatement("DELETE FROM svmodels WHERE UserID=?");
+		pstmt->setInt(1, EXPECTED_USER_ID);
+		pstmt->executeUpdate();
 
 		//Delete Pointers
-		delete res;
-		delete stmt;
+		delete pstmt;
 		delete connection;
 	}
 	catch (sql::SQLException& e) {
 		std::cout << e.what() << std::endl;
 	}
+
 
 	bool threshold_check = EXPECTED_THRESHOLD == returned_threshold;
 
@@ -178,28 +187,31 @@ void test_update_threshold() {
 	save_model(EXPECTED_USER_ID, EXPECTED_PATH);
 	update_threshold(EXPECTED_USER_ID, EXPECTED_THRESHOLD);
 	double returned_threshold = get_threshold(EXPECTED_USER_ID);
+	
 
 	try {
 		sql::Driver* driver = NULL;
 		sql::Connection* connection = NULL;
-		sql::Statement* stmt = NULL;
-		sql::ResultSet* res = NULL;
+		sql::PreparedStatement* pstmt = NULL;
 
-		//Prepare Query
-		std::string query = "DELETE FROM svmodels WHERE UserID=" + std::to_string(EXPECTED_USER_ID);
+		//Connect to Database
+		driver = get_driver_instance();
+		connection = driver->connect(dbhost, user, passwd);
+		connection->setSchema(database);
 
 		//Execute Query
-		stmt = connection->createStatement();
-		res = stmt->executeQuery(query);
+		pstmt = connection->prepareStatement("DELETE FROM svmodels WHERE UserID=?");
+		pstmt->setInt(1, EXPECTED_USER_ID);
+		pstmt->executeUpdate();
 
 		//Delete Pointers
-		delete res;
-		delete stmt;
+		delete pstmt;
 		delete connection;
 	}
 	catch (sql::SQLException& e) {
 		std::cout << e.what() << std::endl;
 	}
+
 
 	bool threshold_check = EXPECTED_THRESHOLD == returned_threshold;
 

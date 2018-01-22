@@ -30,72 +30,66 @@ std::vector<std::string> split_string(std::string str) {
 Signature read_signature(std::string file_to_read, bool is_genuine)
 {
 	//Creates object to store result Signature
-	Signature* current_signature = new Signature();
-	current_signature->is_genuine = is_genuine;
-	current_signature->is_known = true;
+	Signature current_signature;
+	current_signature.is_genuine = is_genuine;
+	current_signature.is_known = true;
 
 	//Opens file buffer
 	std::ifstream file(file_to_read);
 	
 	//String to store file line
 	std::string str;
-	//String to store whole file to reverse
+	//Vector to store file lines
 	std::vector<std::string> file_lines;
-
+	
+	int counter = 0;
 	while (std::getline(file, str))
 	{
-		if (str[FIRST_CHARACTER] == 'X') {
-			//Ignores first row
-		}
-		else if (str[FIRST_CHARACTER] == 'D') {
-			//Reserves size based on second row
-			std::string to_reserve;
-
-			//If row contains number append it
-			for (int i = 0; i < str.length(); i++) {
-				if (isdigit(str[i])) to_reserve += str[i];
-			}
-
-			//Reserves space equal to Data Size
-			file_lines.reserve(std::stoi(str));
-			current_signature->time_sequence.reserve(std::stoi(str));
-		}
-		else {
+		//Skip first two lines
+		if(counter > 1 && !str.empty()) {
 			//Appends Read Line to vector
 			file_lines.push_back(str);
 		}
+		else if (counter == 1) {
+			std::string data_size = split_string(str).at(1);
+			file_lines.reserve(std::stoi(data_size));
+		}
+		counter++;
 	}
+	file.close();
 
-	//Run through vector
-	int index = 0;
-	while (index < file_lines.size() - 1) {
+
+	for (int i = 0; i < file_lines.size(); i++) {
 		//Instant data at row i
 		std::vector<std::string> i_t0;
-		i_t0 = split_string(file_lines[index]);
-
 		//Instant data at row i+1
 		std::vector<std::string> i_t1;
-		i_t1 = split_string(file_lines[index + 1]);
 
-		int x_t0 = std::stoi(i_t0[X_POSITION]);
-		int y_t0 = std::stoi(i_t0[Y_POSITION]);
-		int t0 = std::stoi(i_t0[TIMESTAMP]);
-		int p_t0 = std::stoi(i_t0[PRESSURE]);
-		int x_t1 = std::stoi(i_t1[X_POSITION]);
-		int y_t1 = std::stoi(i_t1[Y_POSITION]);
-		int t1 = std::stoi(i_t1[TIMESTAMP]);
+		//If last element, take previous
+		if (i == (file_lines.size()-1)) {
+			i_t0 = split_string(file_lines.at(i) );
+			i_t1 = split_string(file_lines.at(i - 1) );
+		}
+		else {
+			i_t0 = split_string(file_lines.at(i));
+			i_t1 = split_string(file_lines.at(i + 1));
+		}
+
+		int x_t0 = std::stoi( i_t0.at(X_POSITION) );
+		int y_t0 = std::stoi( i_t0.at(Y_POSITION) );
+		int t0 = std::stoi( i_t0.at(TIMESTAMP) );
+		int p_t0 = std::stoi( i_t0.at(PRESSURE) );
+		int x_t1 = std::stoi( i_t1.at(X_POSITION) );
+		int y_t1 = std::stoi( i_t1.at(Y_POSITION) );
+		int t1 = std::stoi( i_t1.at(TIMESTAMP) );
 
 		//Instant(int x0, int y0, int t0, int p0, int x1, int y1, int t1);
-		Instant* current_instant = new Instant(x_t0, y_t0, t0, p_t0, x_t1, y_t1, t1);
+		Instant current_instant(x_t0, y_t0, t0, p_t0, x_t1, y_t1, t1);
 
-		current_signature->time_sequence.push_back(*current_instant);
-		delete current_instant;
-
-		index++;
+		current_signature.time_sequence.push_back(current_instant);
 	}
 
-	file.close();
-	return *current_signature;
+	return current_signature;
 }
 
 std::vector<Signature> read_all_signatures(std::string path, std::string user) {
@@ -109,16 +103,14 @@ std::vector<Signature> read_all_signatures(std::string path, std::string user) {
 	is_genuine = true;
 	for (int i = 1; i <= 4; i++) {
 		path_to_file = path + user + GENUINE + std::to_string(i) + EXTENSION;
-		current_signature = read_signature(path_to_file, is_genuine);
-		all_signatures.push_back(current_signature);
+		all_signatures.push_back(read_signature(path_to_file, is_genuine));
 	}
 	
 	//Reads all Forgery Signatures
 	is_genuine = false;
 	for (int i = 1; i <= 4; i++) {
 		path_to_file = path + user + FORGERY + std::to_string(i) + EXTENSION;
-		current_signature = read_signature(path_to_file, is_genuine);
-		all_signatures.push_back(current_signature);
+		all_signatures.push_back(read_signature(path_to_file, is_genuine));
 	}
 
 	return all_signatures;
@@ -137,7 +129,7 @@ std::vector<User> read_all_users(bool isTraining) {
 	//Iterates USER_SIZE times
 	for (int i = 1; i <= USER_SIZE; i++) {
 		//Creates new user
-		User* current_user = new User(i);
+		User current_user(i);
 		//Generates a string which will contain the userID
 		std::string user;
 
@@ -153,8 +145,8 @@ std::vector<User> read_all_users(bool isTraining) {
 		}
 
 		//Reads all signatures for an user and adds the user to the vector
-		current_user->user_signatures = read_all_signatures(path, user);
-		all_users.push_back(*current_user);
+		current_user.user_signatures = read_all_signatures(path, user);
+		all_users.push_back(current_user);
 	}
 
 	return all_users;
@@ -187,18 +179,24 @@ void print_results(std::string path, std::vector<std::string> results) {
 }
 
 std::vector<std::string> split_by_comma(std::string str) {
+	//Result vector
 	std::vector<std::string> result;
+	//String to store temporary data
+	std::string tmp = "";
 
-	std::stringstream ss(str);
-
-	std::string temp;
-
-	while (ss >> temp)
-	{
-		result.push_back(temp);
-
-		if (ss.peek() == ',')
-			ss.ignore();
+	//Cycle through string to split
+	for (int i = 0; i < str.size(); i++) {
+		//If ',' or string end
+		if (str.at(i) == ',' || (i == str.size() - 1)) {
+			//Add data to result vector
+			result.push_back(tmp);
+			//Reset string
+			tmp = "";
+		}
+		else {
+			//Add char to string
+			tmp += str.at(i);
+		}
 	}
 
 	return result;
@@ -219,22 +217,10 @@ std::string calculate_averages(double threshold, std::vector<std::vector<std::st
 		}
 	}
 
-	std::string FAR;
-	std::string FRR;
+	double FAR = (countFAR / total);
+	double FRR = (countFRR / total);
 
-	{
-		std::stringstream stream;
-		stream << std::fixed << std::setprecision(2) << (countFAR / total);
-		FAR = stream.str();
-	}
-
-	{
-		std::stringstream stream;
-		stream << std::fixed << std::setprecision(2) << (countFRR / total);
-		FRR = stream.str();
-	}
-
-	return std::to_string(threshold) + "," + FAR + "," + FRR + "\n";
+	return std::to_string(threshold) + "," + std::to_string(FAR) + "," + std::to_string(FRR) + "\n";
 }
 
 /*
@@ -324,18 +310,14 @@ double read_user_optimal(std::string path, double max_far) {
 	// Read Line by Line
 	while (std::getline(file, str)) {
 		
-		if (header) {
-			//Skips first line
-			header = false;
-		}
-		else {
+		if(!header) {
 			// Splits line by comma
 			std::vector<std::string> line = split_by_comma(str);
 
 			// Stores line info
-			point.threshold = std::stod( line[THRESHOLD] );
-			point.far = std::stod( line[FAR] );
-			point.tar = 1 - std::stod( line[FRR] );
+			point.threshold = std::stod( line.at(THRESHOLD) );
+			point.far = std::stod( line.at(FAR) );
+			point.tar = 1 - std::stod( line.at(FRR) );
 
 			// Calculates euclidean distance to optimal point
 			point.distance_from_optimal = sqrt( 
@@ -344,6 +326,9 @@ double read_user_optimal(std::string path, double max_far) {
 
 			// Stores point data
 			user_data.push_back(point);
+		} else {
+			//Skips first line
+			header = false;
 		}
 	}
 

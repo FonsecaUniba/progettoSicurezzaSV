@@ -22,13 +22,13 @@
 */
 
 void test_split_string() {
-	std::string to_test = "Str1nga. \\di\\ pr-ova";
+	std::string to_test = "Str1nga di prova";
 	std::vector<std::string> result = split_string(to_test);
 
 	const int EXPECTED_SIZE = 3;
 	int returned_size = result.size();
 
-	bool size_check = EXPECTED_SIZE == returned_size;
+	bool size_check = (EXPECTED_SIZE == returned_size);
 
 	if (size_check) {
 		std::cout << "FileInputTest::test_split_string Everything OK" << std::endl << std::endl;
@@ -43,9 +43,9 @@ void test_read_signature() {
 	/*
 		FIRST SIGNATURE
 	*/
-	std::string path = "Signatures/TestingSubset/001_f_1.sig";
+	std::string path = "C:/Signatures/TestingSubset/001_f_1.sig";
 	bool is_genuine = false;
-	int EXPECTED_SIZE = 699;
+	int EXPECTED_SIZE = 698;
 
 	Signature returned_signature = read_signature(path, is_genuine);
 	int returned_size = returned_signature.time_sequence.size();
@@ -78,16 +78,16 @@ void test_read_signature() {
 	/*
 		SECOND SIGNATURE
 	*/
-	path = "Signatures/TestingSubset/001_g_1.sig";
+	path = "C:/Signatures/TestingSubset/001_g_1.sig";
 	is_genuine = true;
-	EXPECTED_SIZE = 203;
+	EXPECTED_SIZE = 202;
 
 	returned_signature = read_signature(path, is_genuine);
 	returned_size = returned_signature.time_sequence.size();
 
 	/* Signature file name contains "_f_" so it's forgery
 	genuine_check==true when is_genuine==false */
-	genuine_check = !returned_signature.is_genuine;
+	genuine_check = returned_signature.is_genuine;
 	// Signature is known, so known_check==true when is_known==true
 	known_check = returned_signature.is_known;
 	size_check = EXPECTED_SIZE == returned_size;
@@ -176,8 +176,8 @@ void test_print_results() {
 }
 
 void test_split_by_comma() {
-	std::string to_test = "Str1nga.,\\di\\,pr-ova";
-	std::vector<std::string> result = split_string(to_test);
+	std::string to_test = "Str1nga,di,prova";
+	std::vector<std::string> result = split_by_comma(to_test);
 
 	const int EXPECTED_SIZE = 3;
 	int returned_size = result.size();
@@ -197,7 +197,7 @@ void test_calculate_averages() {
 	std::vector<std::string> test_values;
 	std::vector<std::vector<std::string>> file_lines;
 	double threshold = 0.10;
-	const std::string EXPECTED_STRING= "0.10,0,0\n";
+	const std::string EXPECTED_STRING= std::to_string(0.10) + "," + std::to_string(0.0) + "," + std::to_string(0.0) + "\n";
 
 	for (int i = 0; i <= 100; i++) {
 		// Use i as UserID
@@ -222,7 +222,7 @@ void test_calculate_averages() {
 		std::cout << "FileInputTest::test_calculate_averages Everything OK" << std::endl << std::endl;
 	}
 	else {
-		std::cout << "FileInputTest::test_calculate_averages String Mismatch" << std::endl;
+		std::cout << "FileInputTest::test_calculate_averages Value Mismatch" << std::endl;
 		std::cout << "Expected " << EXPECTED_STRING << " but got " << returned_string << std::endl << std::endl;
 	}
 }
@@ -304,7 +304,7 @@ void test_fileinput_module() {
 	test_read_signature();
 
 	test_read_all_signatures();
-
+	
 	test_read_all_users();
 
 	test_print_results();
@@ -312,7 +312,7 @@ void test_fileinput_module() {
 	test_split_by_comma();
 
 	test_calculate_averages();
-
+	
 	test_print_optimization();
 
 	test_read_user_optimal();

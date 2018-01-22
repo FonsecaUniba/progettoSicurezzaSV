@@ -5,6 +5,12 @@
 
 #include <iostream>
 #include <math.h>
+#include <string>
+#include <cppconn/driver.h>
+#include <cppconn/connection.h>
+#include <cppconn/exception.h>
+#include <cppconn/prepared_statement.h>
+#include <cppconn/resultset.h>
 
 #include "../InputOutput/DBConnector.h"
 

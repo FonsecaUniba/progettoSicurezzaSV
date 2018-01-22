@@ -134,5 +134,5 @@ bool test_signature(int userID, Signature to_check, double threshold) {
 
 bool test_signature(int userID, Signature to_check) {
 	double threshold = get_threshold(userID);
-	test_signature(userID, to_check, threshold);
+	return test_signature(userID, to_check, threshold);
 }

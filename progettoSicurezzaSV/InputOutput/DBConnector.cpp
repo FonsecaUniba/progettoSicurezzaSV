@@ -5,31 +5,27 @@
 	This data is plain for academic purposes
 	It will obviously be different in an actual system
 */
-const std::string user = "root";
-const std::string passwd = "alpine";
-const std::string database = "signaturesvm";
-const std::string dbhost = "tcp://localhost:3306";
+#define USER "root"
+#define PASSWD "alpine"
+#define DATABASE "signaturesvm"
+#define DBHOST "tcp://127.0.0.1:3306"
 
 void save_model(int user_id, std::string model_path) {
 	sql::Driver* driver = NULL;
 	sql::Connection* connection = NULL;
-	sql::Statement* stmt = NULL;
-	sql::ResultSet* res = NULL;
 	sql::PreparedStatement* pstmt = NULL;
 	
 	try {
 		// Connect to Database
 		driver = get_driver_instance();
-		connection = driver->connect(dbhost, user, passwd);
-		connection->setSchema(database);
-		
-		//Prepare insert command
-		pstmt = connection->prepareStatement("INSERT INTO svmodels(UserID, ModelPATH) VALUES (?,?)");
+		connection = driver->connect(DBHOST, USER, PASSWD);
+		connection->setSchema(DATABASE);
 
-		//Add variables to command
+		//Prepare insert command
+		pstmt = connection->prepareStatement("INSERT INTO svmodels VALUES (?, ?, 0.70)");
 		pstmt->setInt(1, user_id);
 		pstmt->setString(2, model_path);
-
+		
 		//Execute command
 		pstmt->executeUpdate();
 	}
@@ -39,32 +35,28 @@ void save_model(int user_id, std::string model_path) {
 
 	//Delete Pointers
 	delete pstmt;
-	delete res;
-	delete stmt;
 	delete connection;
 }
 
 std::string load_model(int user_id) {
 	sql::Driver* driver = NULL;
 	sql::Connection* connection = NULL;
-	sql::Statement* stmt = NULL;
+	sql::PreparedStatement* pstmt = NULL;
 	sql::ResultSet* res = NULL;
 
 	//Path to Model
 	std::string filepath;
 
-	//Prepare Query
-	std::string query = "SELECT ModelPATH FROM svmodels WHERE UserID=" + std::to_string(user_id);
-
 	try {
 		//Connect to Database
 		driver = get_driver_instance();
-		connection = driver->connect(dbhost, user, passwd);
-		connection->setSchema(database);
+		connection = driver->connect(DBHOST, USER, PASSWD);
+		connection->setSchema(DATABASE);
 		
 		//Execute Query
-		stmt = connection->createStatement();
-		res = stmt->executeQuery(query);
+		pstmt = connection->prepareStatement("SELECT ModelPATH FROM svmodels WHERE UserID= ?");
+		pstmt->setInt(1, user_id);
+		res = pstmt->executeQuery();
 
 		//Save Model Path
 		while (res->next()){
@@ -77,7 +69,7 @@ std::string load_model(int user_id) {
 
 	//Delete Pointers
 	delete res;
-	delete stmt;
+	delete pstmt;
 	delete connection;
 
 	//Return Model Path
@@ -87,23 +79,21 @@ std::string load_model(int user_id) {
 double get_threshold(int user_id) {
 	sql::Driver* driver = NULL;
 	sql::Connection* connection = NULL;
-	sql::Statement* stmt = NULL;
+	sql::PreparedStatement* pstmt = NULL;
 	sql::ResultSet* res = NULL;
-
-	//Prepare Query
-	std::string query = "SELECT Threshold FROM svmodels WHERE UserID=" + std::to_string(user_id);
 
 	double result;
 
 	try {
 		//Connect to Database
 		driver = get_driver_instance();
-		connection = driver->connect(dbhost, user, passwd);
-		connection->setSchema(database);
+		connection = driver->connect(DBHOST, USER, PASSWD);
+		connection->setSchema(DATABASE);
 		
 		//Execute Query
-		stmt = connection->createStatement();
-		res = stmt->executeQuery(query);
+		pstmt = connection->prepareStatement("SELECT Threshold FROM svmodels WHERE UserID = ?");
+		pstmt->setInt(1, user_id);
+		res = pstmt->executeQuery();
 
 		//Save Threshold
 		while (res->next()) {
@@ -116,7 +106,7 @@ double get_threshold(int user_id) {
 
 	//Delete Pointers
 	delete res;
-	delete stmt;
+	delete pstmt;
 	delete connection;
 
 	//Return Treshold
@@ -133,8 +123,8 @@ void update_threshold(int user_id, double threshold) {
 	try {
 		//Connect to Database
 		driver = get_driver_instance();
-		connection = driver->connect(dbhost, user, passwd);
-		connection->setSchema(database);
+		connection = driver->connect(DBHOST, USER, PASSWD);
+		connection->setSchema(DATABASE);
 
 		//Prepare update command
 		pstmt = connection->prepareStatement("UPDATE svmodels SET Threshold = ? WHERE UserID = ?");
