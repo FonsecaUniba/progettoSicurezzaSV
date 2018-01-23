@@ -236,11 +236,8 @@ void print_optimization(std::string threshold_path, std::string results_path, do
 	// Sets Header
 	output_stream << "Threshold,FAR,FRR\n";
 	
-	// Initializes index value
 	double index = first;
-
-	// While there are threshold tested
-	while (index <= stop) {
+	while ( abs(index - stop) > 1e-6 ) {
 		// String to store lines
 		std::string str;
 		// Vector to store file lines
@@ -249,7 +246,8 @@ void print_optimization(std::string threshold_path, std::string results_path, do
 		// Determines current_file_path
 		std::string current_path = threshold_path + std::to_string(index) + ".csv";
 		// Opens File
-		std::ifstream current_file(current_path);
+		std::ifstream current_file;
+		current_file.open(current_path);
 
 		// Read Line by Line
 		while (std::getline(current_file, str)) {
@@ -267,7 +265,6 @@ void print_optimization(std::string threshold_path, std::string results_path, do
 		// Clears Memory
 		file_lines.clear();
 
-		// Next File
 		index += step;
 	}
 
@@ -303,7 +300,8 @@ double read_user_optimal(std::string path, double max_far) {
 	// String to store file data
 	std::string str;
 	// Input Stream
-	std::ifstream file(path);
+	std::ifstream file;
+	file.open(path);
 	
 	//Is first line?
 	bool header = true;
@@ -317,12 +315,13 @@ double read_user_optimal(std::string path, double max_far) {
 			// Stores line info
 			point.threshold = std::stod( line.at(THRESHOLD) );
 			point.far = std::stod( line.at(FAR) );
-			point.tar = 1 - std::stod( line.at(FRR) );
+			point.tar = 1.0 - std::stod( line.at(FRR) );
 
 			// Calculates euclidean distance to optimal point
-			point.distance_from_optimal = sqrt( 
-				pow( (point.far - OPTIMAL_FAR) , 2 ) +
-				pow( (point.tar - OPTIMAL_TAR) , 2 ) );
+			double delta_x = point.far - OPTIMAL_FAR;
+			double delta_y = point.tar - OPTIMAL_TAR;
+
+			point.distance_from_optimal = sqrt( pow(delta_x, 2) + pow(delta_y, 2) );
 
 			// Stores point data
 			user_data.push_back(point);

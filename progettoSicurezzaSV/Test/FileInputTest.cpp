@@ -228,30 +228,38 @@ void test_calculate_averages() {
 }
 
 void test_print_optimization() {
-	for (int i = 0; i <= 10; i++) {
-		double file_name = (i + 1) / 10;
-		std::string file_path = "Results/UnitTest/" + std::to_string(file_name) + ".csv";
-		
-		std::vector<std::string> file_lines;
-		std::string line = "";
+	double start = 0.10;
+	double end = 1.00;
+
+	while ( abs(start - end) > 1e-6) {
+		std::string file_path = "Results/UnitTest/Thresholds/" + std::to_string(start) + ".csv";
+
+		std::ofstream file;
+		file.open(file_path);
+
+		file << "UserID,SignatureID,Genuine\\Forgery,Accepted\\Rejected,OK\\FR\\FA\n";
 
 		for (int j = 0; j <= 10; j++) {
+			std::string line = "";
+
 			//Append data to file
-			line += std::to_string(i) + ",";
-			line += std::to_string(i) + ",";
-			line += ((i % 2) == 0) ? "Genuine," : "Forgery,";
-			line += ((i % 2) == 0) ? "Accepted," : "Rejected,";
+			line += std::to_string(j) + ",";
+			line += std::to_string(j) + ",";
+			line += ((j % 2) == 0) ? "Genuine," : "Forgery,";
+			line += ((j % 2) == 0) ? "Accepted," : "Rejected,";
 			line += "OK\n";
 
-			file_lines.push_back(line);
+			file << line;
 		}
 
-		print_results(file_path, file_lines);
-		file_lines.clear();
+		file.close();
+
+		start += 0.10;
 	}
 
+
 	std::string result_path = "Results/UnitTest/001.csv";
-	std::string threshold_path = "Results/UnitTest/";
+	std::string threshold_path = "Results/UnitTest/Thresholds/";
 	print_optimization(threshold_path, result_path, 0.10, 0.10, 1.00);
 
 	std::cout << "FileInputTest::test_print_results Cannot output automated result" << std::endl;
@@ -259,36 +267,72 @@ void test_print_optimization() {
 }
 
 void test_read_user_optimal() {
-	for (int i = 0; i <= 10; i++) {
-		double file_name = (i + 1) / 10;
-		std::string file_path = "Results/UnitTest/" + std::to_string(file_name) + ".csv";
+	/*
+		REALLY unacceptable value, but
+		since the testing graphs are
+		linear it's the only way to check
+		past the first values
+	*/
+	const double MAX_FAR = 0.60;
 
-		std::vector<std::string> file_lines;
-		std::string line = "";
+	// First File
+	std::string file_path = "Results/UnitTest/001.csv";
+	std::ofstream file;
+	file.open(file_path);
 
-		for (int j = 0; j <= 10; j++) {
-			//Append data to file
-			line += std::to_string(i) + ",";
-			line += std::to_string(i) + ",";
-			line += ((i % 2) == 0) ? "Genuine," : "Forgery,";
-			line += ((i % 2) == 0) ? "Accepted," : "Rejected,";
-			line += "OK\n";
+	file << "Threshold,FAR,FRR\n";
 
-			file_lines.push_back(line);
-		}
+	double index = 0.10;
+	double end = 1.00;
+	std::string to_print;
 
-		print_results(file_path, file_lines);
-		file_lines.clear();
+	while ( abs(index - end) > 1e-6 ) {
+		to_print = std::to_string(index) + "," + std::to_string(index) + "," + std::to_string(index) + "\n";
+		file << to_print;
+
+		index += 0.10;
 	}
 
-	std::string result_path = "Results/UnitTest/001.csv";
-	std::string threshold_path = "Results/UnitTest/";
-	print_optimization(threshold_path, result_path, 0.10, 0.10, 1.00);
+	file.close();
 
-	double EXPECTED_RESULT = 1.00;
-	double returned_result = read_user_optimal(result_path, 0.20);
+	double EXPECTED_RESULT = 0.10;
+	double returned_result = read_user_optimal(file_path, MAX_FAR);
 
 	bool check_optimal = abs(EXPECTED_RESULT - returned_result) < 1e-6;
+
+	if (check_optimal) {
+		std::cout << "FileInputTest::read_user_optimal Everything OK" << std::endl << std::endl;
+	}
+	else {
+		std::cout << "FileInputTest::read_user_optimal Result Mismatch" << std::endl;
+		std::cout << "Expected " << EXPECTED_RESULT << " but got " << returned_result << std::endl << std::endl;
+	}
+
+
+	// Second File
+	file_path = "Results/UnitTest/002.csv";
+	file;
+	file.open(file_path);
+
+	file << "Threshold,FAR,FRR\n";
+
+	index = 0.10;
+	end = 1.00;
+	to_print;
+
+	while (abs(index - end) > 1e-6) {
+		to_print = std::to_string(index) + "," + std::to_string(index) + "," + std::to_string(1.0 - index) + "\n";
+		file << to_print;
+
+		index += 0.10;
+	}
+
+	file.close();
+
+	EXPECTED_RESULT = 0.50;
+	returned_result = read_user_optimal(file_path, MAX_FAR);
+
+	check_optimal = abs(EXPECTED_RESULT - returned_result) < 1e-6;
 
 	if (check_optimal) {
 		std::cout << "FileInputTest::read_user_optimal Everything OK" << std::endl << std::endl;
