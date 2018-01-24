@@ -63,6 +63,16 @@ std::vector<Signature> read_all_signatures(std::string path, std::string user);
 std::vector<User> read_all_users(bool isTraining);
 
 /*
+	Reads all Signatures of one user and returns the user;
+	Applying two fold cross-validation, the path to the signatures
+	will chance depending on which phase it's currently undergoing
+
+	id - ID to assign to user
+	isTraining - Is it Training or Testing phase?
+*/
+User read_one_user(int id, bool isTraining);
+
+/*
 	Creates a [Threshold].csv file in path containing the results
 	of a test executed at a given threshold value
 

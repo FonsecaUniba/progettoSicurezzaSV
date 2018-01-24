@@ -11,6 +11,7 @@ User::User(int id)
 
 User::~User()
 {
+	this->user_signatures.clear();
 }
 
 int User::get_id() {

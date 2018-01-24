@@ -10,5 +10,5 @@ Signature::Signature()
 
 Signature::~Signature()
 {
-	// Does Nothing
+	this->time_sequence.clear();
 }

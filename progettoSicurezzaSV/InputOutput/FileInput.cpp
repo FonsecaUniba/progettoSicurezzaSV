@@ -12,8 +12,8 @@ const std::string GENUINE = "_g_";
 const std::string FORGERY = "_f_";
 const std::string EXTENSION = ".sig";
 
-const std::string TRAINING_PATH = "Signatures/TrainingSubset";
-const std::string TESTING_PATH = "Signatures/TestingSubset";
+const std::string TRAINING_PATH = "Signatures/TrainingSubset/";
+const std::string TESTING_PATH = "Signatures/TestingSubset/";
 
 enum Columns : int {USER_ID, SIGNATURE_ID, GENUINE_FORGERY, ACCEPTED_REJECTED, OK_FR_FA};
 
@@ -103,6 +103,7 @@ std::vector<Signature> read_all_signatures(std::string path, std::string user) {
 	is_genuine = true;
 	for (int i = 1; i <= 4; i++) {
 		path_to_file = path + user + GENUINE + std::to_string(i) + EXTENSION;
+		std::cout << "Reading: " << path_to_file << std::endl;
 		all_signatures.push_back(read_signature(path_to_file, is_genuine));
 	}
 	
@@ -110,6 +111,7 @@ std::vector<Signature> read_all_signatures(std::string path, std::string user) {
 	is_genuine = false;
 	for (int i = 1; i <= 4; i++) {
 		path_to_file = path + user + FORGERY + std::to_string(i) + EXTENSION;
+		std::cout << "Reading: " << path_to_file << std::endl;
 		all_signatures.push_back(read_signature(path_to_file, is_genuine));
 	}
 
@@ -152,6 +154,31 @@ std::vector<User> read_all_users(bool isTraining) {
 	return all_users;
 }
 
+User read_one_user(int id, bool isTraining) {
+	//Determines if training or testing phase, sets path accordingly
+	std::string path = (isTraining) ? TRAINING_PATH : TESTING_PATH;
+
+	//Creates new user
+	User current_user(id);
+	//Generates a string which will contain the userID
+	std::string user;
+
+	//Pads UserID to 3 characters
+	if (id < 10) {
+		user = "00" + std::to_string(id);
+	}
+	else if (id < 100) {
+		user = "0" + std::to_string(id);
+	}
+	else {
+		user = std::to_string(id);
+	}
+
+	//Reads all signatures for an user and adds the user to the vector
+	current_user.user_signatures = read_all_signatures(path, user);
+
+	return current_user;
+}
 
 /*
 - UserID
@@ -165,7 +192,7 @@ void print_results(std::string path, std::vector<std::string> results) {
 	ofstream output_stream;
 	
 	// Opens Stream
-	output_stream.open(path);
+	output_stream.open(path, std::ofstream::app);
 	// Sets header
 	output_stream << "UserID,SignatureID,Genuine\\Forgery,Accepted\\Rejected,OK\\FR\\FA\n";
 	

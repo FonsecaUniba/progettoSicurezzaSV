@@ -1,6 +1,19 @@
 #include "stdafx.h"
 #include "SVMConnector.h"
 
+template <typename T>
+cv::Mat_<T> vec2cvMat_2D(std::vector< std::vector<T> > &inVec) {
+	int rows = static_cast<int>(inVec.size());
+	int cols = static_cast<int>(inVec[0].size());
+
+	cv::Mat_<T> resmat(rows, cols);
+	for (int i = 0; i < rows; i++)
+	{
+		resmat.row(i) = cv::Mat(inVec[i]).t();
+	}
+	return resmat;
+}
+
 void train_svm(User to_train) {
 	//Define dimensionality constants
 	const int LABEL_DIMENSION = 1;
@@ -20,9 +33,9 @@ void train_svm(User to_train) {
 		for (int j = 0; j < to_train.user_signatures.at(i).time_sequence.size(); j++) {
 			//Counts the elements
 			instant_count++;
-			
+
 			//Add 1 if Signature is genuine, -1 otherwise
-			int to_add = ( to_train.user_signatures.at(i).is_genuine ) ? 1 : -1;
+			int to_add = (to_train.user_signatures.at(i).is_genuine) ? 1 : -1;
 			label_vector.push_back(to_add);
 
 			//Temporary vector to push data to Bidimensional Vector
@@ -41,40 +54,51 @@ void train_svm(User to_train) {
 		}
 	}
 
-	//Declare TrainingLabels and TrainingData
-	cv::Mat labels_mat( instant_count, LABEL_DIMENSION, CV_32SC1, label_vector.data() );
-	cv::Mat training_mat( instant_count, PARAMETERS_COUNT, CV_32FC1, training_vector.data());
+	std::cout << label_vector.size() << std::endl;
+	std::cout << training_vector.size() << std::endl;
 
-	//Sets up the SVM
-	cv::Ptr<cv::ml::SVM> svm;
-	cv::Ptr<cv::ml::TrainData> td = cv::ml::TrainData::create(training_mat, cv::ml::ROW_SAMPLE, labels_mat);
-	svm->trainAuto(td);
+	try{
+		//Declare TrainingLabels and TrainingData
+		cv::Mat labels_mat(label_vector, true);
+		cv::Mat training_mat = vec2cvMat_2D(training_vector);
+		cv::Ptr<cv::ml::TrainData> td = cv::ml::TrainData::create(training_mat, cv::ml::ROW_SAMPLE, labels_mat);
 
-	/*
-		Worse parameter optimization but better performances
+		//Sets up the SVM
+		//cv::Ptr<cv::ml::SVM> svm;
+		//Longer Training times, better optimization
+		//svm->trainAuto(td);
 
+		
+		//Worse parameter optimization but better performances
 		// Set up SVM for OpenCV 3
-		Ptr<cv::ml::SVM> svm = cv::ml::SVM::create();
+		cv::Ptr<cv::ml::SVM> svm = cv::ml::SVM::create();
 		// Set SVM type
 		svm->setType(cv::ml::SVM::C_SVC);
-		// Set SVM Kernel to Radial Basis Function (RBF) 
+		// Set SVM Kernel to Radial Basis Function (RBF)
 		svm->setKernel(cv::ml::SVM::RBF);
 		// Set parameter C
 		svm->setC(12.5);
 		// Set parameter Gamma
 		svm->setGamma(0.50625);
- 
-		// Train SVM on training data 
-		cv::Ptr<TrainData> td = TrainData::create(trainData, ROW_SAMPLE, trainLabels);
-		svm->train(td);
-	*/
 
-	//Sets svm save path
-	std::string path = "SVMs/" + std::to_string(id) + ".xml";
-	//Save svm to file
-	svm->save(path);
-	//Store svm path on DB
-	save_model(id, path);
+		// Train SVM on training data
+		svm->train(td);
+
+		//Sets svm save path
+		std::string path = "SVMs/" + std::to_string(id) + ".xml";
+		//Save svm to file
+		svm->save(path);
+		//Store svm path on DB Currently disabled
+		//save_model(id, path);
+
+		label_vector.clear();
+		training_vector.clear();
+		delete svm;
+		delete td;
+	}
+	catch (cv::Exception &e) {
+		std::cout << e.what() << std::endl;
+	}
 }
 
 std::vector<double> compute_distances(int userID, Signature to_check) {
@@ -103,6 +127,38 @@ std::vector<double> compute_distances(int userID, Signature to_check) {
 		//Predict distance
 		double distance = svm->predict(test_mat);
 		
+		//Adds Distance to results vector
+		results.push_back(distance);
+		//Clears Vector
+		instant_vector.clear();
+	}
+
+	return results;
+}
+
+std::vector<double> compute_distances(int userID, Signature to_check, std::string path) {
+	const int PARAMETERS_COUNT = 4;
+	std::vector<double> results;
+
+	//Sets up the SVM
+	cv::Ptr<cv::ml::SVM> svm;
+	svm->load(path);
+
+	//For each instant in the time sequence
+	for (int i = 0; to_check.time_sequence.size(); i++) {
+		std::vector<double> instant_vector(PARAMETERS_COUNT);
+
+		instant_vector.push_back(to_check.time_sequence.at(i).get_displacement());
+		instant_vector.push_back(to_check.time_sequence.at(i).get_velocity());
+		instant_vector.push_back(to_check.time_sequence.at(i).get_acceleration());
+		instant_vector.push_back(to_check.time_sequence.at(i).get_pressure());
+
+		//Creates Mat to test
+		cv::Mat test_mat(PARAMETERS_COUNT, 1, CV_32FC1, instant_vector.data());
+
+		//Predict distance
+		double distance = svm->predict(test_mat);
+
 		//Adds Distance to results vector
 		results.push_back(distance);
 		//Clears Vector
