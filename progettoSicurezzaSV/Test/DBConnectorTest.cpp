@@ -15,14 +15,14 @@ using namespace std;
 void test_save_model() {
 	const int EXPECTED_USER_ID = 1;
 	const std::string EXPECTED_PATH = "C:/Expected";
-	const double EXPECTED_THRESHOLD = 0.70;
+	const float EXPECTED_THRESHOLD = 0.70;
 	
 	save_model(EXPECTED_USER_ID, EXPECTED_PATH);
 	
 	
 	int returned_user_id;
 	std::string returned_model_path;
-	double returned_threshold;
+	float returned_threshold;
 	
 	try {
 		sql::Driver* driver = NULL;
@@ -47,7 +47,7 @@ void test_save_model() {
 		while (res->next()) {
 			returned_user_id = res->getInt("Threshold");
 			returned_model_path = res->getString("Threshold");
-			returned_threshold = res->getDouble("Threshold");
+			returned_threshold = (float) res->getDouble("Threshold");
 		}
 		
 		//Prepare Query
@@ -138,10 +138,10 @@ void test_load_model() {
 void test_get_threshold() {
 	const int EXPECTED_USER_ID = 1;
 	const std::string EXPECTED_PATH = "C:/Expected";
-	const double EXPECTED_THRESHOLD = 0.70;
+	const float EXPECTED_THRESHOLD = 0.70;
 
 	save_model(EXPECTED_USER_ID, EXPECTED_PATH);
-	double returned_threshold = get_threshold(EXPECTED_USER_ID);
+	float returned_threshold = get_threshold(EXPECTED_USER_ID);
 
 
 	try {
@@ -182,11 +182,11 @@ void test_get_threshold() {
 void test_update_threshold() {
 	const int EXPECTED_USER_ID = 1;
 	const std::string EXPECTED_PATH = "C:/Expected";
-	const double EXPECTED_THRESHOLD = 0.50;
+	const float EXPECTED_THRESHOLD = 0.50;
 
 	save_model(EXPECTED_USER_ID, EXPECTED_PATH);
 	update_threshold(EXPECTED_USER_ID, EXPECTED_THRESHOLD);
-	double returned_threshold = get_threshold(EXPECTED_USER_ID);
+	float returned_threshold = get_threshold(EXPECTED_USER_ID);
 	
 
 	try {

@@ -18,10 +18,10 @@ int User::get_id() {
 	return this->id;
 }
 
-double User::get_threshold() {
+float User::get_threshold() {
 	return this->threshold;
 }
 
-void User::set_threshold(double threshold) {
+void User::set_threshold(float threshold) {
 	this->threshold = threshold;
 }

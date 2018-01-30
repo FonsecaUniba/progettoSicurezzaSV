@@ -62,15 +62,15 @@ int Instant::get_y() {
 	return this->y;
 }
 
-double Instant::get_displacement(){
+float Instant::get_displacement(){
 	return this->displacement;
 }
 
-double Instant::get_velocity() {
+float Instant::get_velocity() {
 	return this->velocity;
 }
 
-double Instant::get_acceleration() {
+float Instant::get_acceleration() {
 	return this->acceleration;
 }
 

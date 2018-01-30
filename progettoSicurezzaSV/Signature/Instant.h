@@ -62,11 +62,11 @@ public:
 	// Returns Position Y
 	int get_y();
 	// Returns the Instantaneous Displacement
-	double get_displacement();
+	float get_displacement();
 	// Returns the Instantaneous Velocity
-	double get_velocity();
+	float get_velocity();
 	// Returns the Instantaneous Acceleration
-	double get_acceleration();
+	float get_acceleration();
 	// Returns the Instantaneous Pressure
 	int get_pressure();
 	// Returns timestamp
@@ -78,11 +78,11 @@ private:
 	// Position Y of Point, used for plotting
 	int y;
 	// Instantaneous Displacement
-	double displacement;
+	float displacement;
 	// Instantaneous Velocity
-	double velocity;
+	float velocity;
 	// Instantaneous Acceleration
-	double acceleration;
+	float acceleration;
 	// Instantaneous pressure
 	int pressure;
 	// Instant Time

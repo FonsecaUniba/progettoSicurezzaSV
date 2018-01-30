@@ -191,14 +191,18 @@ void print_results(std::string path, std::vector<std::string> results) {
 	// Declares Output Stream
 	ofstream output_stream;
 	
+	bool exists = boost::filesystem::exists(path);
+
+	std::cout << "Writing: " << path << std::endl;
+
 	// Opens Stream
 	output_stream.open(path, std::ofstream::app);
 	// Sets header
-	output_stream << "UserID,SignatureID,Genuine\\Forgery,Accepted\\Rejected,OK\\FR\\FA\n";
+	if(!exists) output_stream << "UserID,SignatureID,Genuine\\Forgery,Accepted\\Rejected,OK\\FR\\FA\n";
 	
 	// Prints Results
 	for (int i = 0; i < results.size(); i++) {
-		output_stream << results[i] << "\n";
+		output_stream << results[i];
 	}
 
 	//Closes Stream
@@ -206,46 +210,48 @@ void print_results(std::string path, std::vector<std::string> results) {
 }
 
 std::vector<std::string> split_by_comma(std::string str) {
-	//Result vector
 	std::vector<std::string> result;
-	//String to store temporary data
-	std::string tmp = "";
 
-	//Cycle through string to split
-	for (int i = 0; i < str.size(); i++) {
-		//If ',' or string end
-		if (str.at(i) == ',' || (i == str.size() - 1)) {
-			//Add data to result vector
-			result.push_back(tmp);
-			//Reset string
-			tmp = "";
-		}
-		else {
-			//Add char to string
-			tmp += str.at(i);
-		}
+	std::istringstream ss(str);
+	std::string token;
+
+	while (std::getline(ss, token, ',')) {
+		result.push_back(token);
 	}
 
 	return result;
 }
 
 std::string calculate_averages(double threshold, std::vector<std::vector<std::string>>& file_lines) {
-	int total = file_lines.size();
 	int countFAR = 0;
 	int countFRR = 0;
+	int count_genuine = 0;
+	int count_forgery = 0;
 
+	//For each line
 	for (int i = 0; i < file_lines.size(); i++) {
+		//Store value at column OK_FR_FA
 		std::string value = file_lines.at(i).at(OK_FR_FA);
+		
+		//If false rejection
 		if (value == "FR") {
 			countFRR++;
 		}
+		//If false acceptance
 		else if (value == "FA") {
 			countFAR++;
 		}
+
+		if (file_lines.at(i).at(GENUINE_FORGERY) == "Genuine") {
+			count_genuine++;
+		}
+		else {
+			count_forgery++;
+		}
 	}
 
-	double FAR = (countFAR / total);
-	double FRR = (countFRR / total);
+	double FAR = (double) countFAR / (double) count_forgery;
+	double FRR = (double) countFRR / (double) count_genuine;
 
 	return std::to_string(threshold) + "," + std::to_string(FAR) + "," + std::to_string(FRR) + "\n";
 }
@@ -255,45 +261,51 @@ std::string calculate_averages(double threshold, std::vector<std::vector<std::st
 	- FAR
 	- FRR
 */
-void print_optimization(std::string threshold_path, std::string results_path, double first, double step, double stop) {
+void print_optimization(std::string to_read, std::string results_path, double threshold) {
+	//Determine if file to print on already exists
+	bool exists = boost::filesystem::exists(results_path);
+	std::cout << "Writing: " << results_path << std::endl;
+
 	// Declares output_stream
 	ofstream output_stream;
 	// Opens output stream
-	output_stream.open(results_path);
-	// Sets Header
-	output_stream << "Threshold,FAR,FRR\n";
+	output_stream.open(results_path, std::ofstream::app);
+	// Sets Header if file doesn't already exist
+	if(!exists) output_stream << "Threshold,FAR,FRR\n";
 	
-	double index = first;
-	while ( abs(index - stop) > 1e-6 ) {
-		// String to store lines
-		std::string str;
-		// Vector to store file lines
-		std::vector<std::vector<std::string>> file_lines;
+	// String to store lines
+	std::string str;
+	// Vector to store file lines
+	std::vector<std::vector<std::string>> file_lines;
 
-		// Determines current_file_path
-		std::string current_path = threshold_path + std::to_string(index) + ".csv";
-		// Opens File
-		std::ifstream current_file;
-		current_file.open(current_path);
+	std::cout << "Reading: " << to_read << std::endl;
+	
+	// Opens File
+	std::ifstream input_stream;
+	input_stream.open(to_read);
 
-		// Read Line by Line
-		while (std::getline(current_file, str)) {
+	bool first_line = true;
+	// Read Line by Line
+	while (std::getline(input_stream, str)) {
+		//Skip header
+		if (first_line) {
+			first_line = false;
+		}
+		else {
 			// Splits lines by comma
 			std::vector<std::string> data = split_by_comma(str);
 			// Adds line to file vector
 			file_lines.push_back(data);
 		}
-
-		// Closes File Stream
-		current_file.close();
-
-		output_stream << calculate_averages(index, file_lines);
-
-		// Clears Memory
-		file_lines.clear();
-
-		index += step;
 	}
+
+	// Closes File Stream
+	input_stream.close();
+
+	output_stream << calculate_averages(threshold, file_lines);
+
+	// Clears Memory
+	file_lines.clear();
 
 	//Closes Output Stream
 	output_stream.close();

@@ -18,15 +18,15 @@ void test_instant() {
 	// Function to test
 	Instant test_i = Instant(1, 1, 10, 20, 2, 2, 20);
 
-	const double EXPECTED_DISPLACEMENT = sqrt(2);
-	const double EXPECTED_VELOCITY = sqrt(0.02);
-	const double EXPECTED_ACCELERATION = sqrt(0.0002);
+	const float EXPECTED_DISPLACEMENT = sqrt(2);
+	const float EXPECTED_VELOCITY = sqrt(0.02);
+	const float EXPECTED_ACCELERATION = sqrt(0.0002);
 	const int EXPECTED_PRESSURE = 20;
 	const int EXPECTED_TIMESTAMP = 10;
 
-	double returned_displacement = test_i.get_displacement();
-	double returned_velocity = test_i.get_velocity();
-	double returned_acceleration = test_i.get_acceleration();
+	float returned_displacement = test_i.get_displacement();
+	float returned_velocity = test_i.get_velocity();
+	float returned_acceleration = test_i.get_acceleration();
 	int returned_pressure = test_i.get_pressure();
 	int returned_timestamp = test_i.get_timestamp();
 

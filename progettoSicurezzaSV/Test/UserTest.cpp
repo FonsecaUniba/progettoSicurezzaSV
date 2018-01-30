@@ -5,11 +5,11 @@ using namespace std;
 
 void test_user() {
 	const int EXPECTED_ID = 1;
-	const double EXPECTED_THRESHOLD = 0.70;
+	const float EXPECTED_THRESHOLD = 0.70;
 
 	User* to_test = new User(1);
 	int returned_id = to_test->get_id();
-	double returned_threshold = to_test->get_threshold();
+	float returned_threshold = to_test->get_threshold();
 
 	delete to_test;
 
@@ -33,11 +33,11 @@ void test_user() {
 
 void test_set_threshold() {
 	const int RANDOM_ID = 1;
-	const double EXPECTED_THRESHOLD = 0.20;
+	const float EXPECTED_THRESHOLD = 0.20;
 
 	User* to_test = new User(1);
 	to_test->set_threshold(EXPECTED_THRESHOLD);
-	double returned_threshold = to_test->get_threshold();
+	float returned_threshold = to_test->get_threshold();
 	
 	delete to_test;
 

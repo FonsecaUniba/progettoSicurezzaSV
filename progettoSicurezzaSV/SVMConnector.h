@@ -32,18 +32,6 @@ void train_svm(User to_train);
 
 /*
 	Given a Signature and a user id,
-	loads the SVM from the DB
-	and returns a vector
-	containing the distances between
-	each Instant and the hyperplane
-
-	userID - User to check Signature of
-	to_check - Signature to predict
-*/
-std::vector<double> compute_distances(int userID, Signature to_check);
-
-/*
-	Given a Signature and a user id,
 	loads the SVM from file path
 	and returns a vector
 	containing the distances between
@@ -53,7 +41,7 @@ std::vector<double> compute_distances(int userID, Signature to_check);
 	to_check - Signature to predict
 	path - Path where SVM model is stored
 */
-std::vector<double> compute_distances(int userID, Signature to_check, std::string path);
+std::vector<float> compute_distances(int userID, Signature to_check, std::string path);
 
 /*
 	Tests a user signature at a given
@@ -63,7 +51,7 @@ std::vector<double> compute_distances(int userID, Signature to_check, std::strin
 	to_check - Signature to predict
 	threshold - Threshold at which the signature is accepted
 */
-bool test_signature(int userID, Signature to_check, double threshold);
+bool test_signature(int userID, Signature to_check, float threshold);
 
 /*
 	Tests a user signature, the

@@ -231,7 +231,7 @@ void test_print_optimization() {
 	double start = 0.10;
 	double end = 1.00;
 
-	while ( abs(start - end) > 1e-6) {
+	while (abs(start - end) > 1e-6) {
 		std::string file_path = "Results/UnitTest/Thresholds/" + std::to_string(start) + ".csv";
 
 		std::ofstream file;
@@ -254,13 +254,12 @@ void test_print_optimization() {
 
 		file.close();
 
+		std::string result_path = "Results/UnitTest/001.csv";
+		std::string threshold_path = "Results/UnitTest/Thresholds/" + std::to_string(start) + ".csv";
+		print_optimization(threshold_path, result_path, start);
+
 		start += 0.10;
 	}
-
-
-	std::string result_path = "Results/UnitTest/001.csv";
-	std::string threshold_path = "Results/UnitTest/Thresholds/";
-	print_optimization(threshold_path, result_path, 0.10, 0.10, 1.00);
 
 	std::cout << "FileInputTest::test_print_results Cannot output automated result" << std::endl;
 	std::cout << "Open Results and check if file was correctly created" << std::endl << std::endl;

@@ -76,13 +76,13 @@ std::string load_model(int user_id) {
 	return filepath;
 }
 
-double get_threshold(int user_id) {
+float get_threshold(int user_id) {
 	sql::Driver* driver = NULL;
 	sql::Connection* connection = NULL;
 	sql::PreparedStatement* pstmt = NULL;
 	sql::ResultSet* res = NULL;
 
-	double result;
+	float result;
 
 	try {
 		//Connect to Database
@@ -97,7 +97,7 @@ double get_threshold(int user_id) {
 
 		//Save Threshold
 		while (res->next()) {
-			result = res->getDouble("Threshold");
+			result = (float) res->getDouble("Threshold");
 		}
 	}
 	catch (sql::SQLException& e) {
@@ -113,7 +113,7 @@ double get_threshold(int user_id) {
 	return result;
 }
 
-void update_threshold(int user_id, double threshold) {
+void update_threshold(int user_id, float threshold) {
 	sql::Driver* driver = NULL;
 	sql::Connection* connection = NULL;
 	sql::Statement* stmt = NULL;
@@ -130,7 +130,7 @@ void update_threshold(int user_id, double threshold) {
 		pstmt = connection->prepareStatement("UPDATE svmodels SET Threshold = ? WHERE UserID = ?");
 
 		//Add variables to command
-		pstmt->setDouble(1, threshold);
+		pstmt->setDouble(1, (double) threshold);
 		pstmt->setInt(2, user_id);
 
 		//Execute command

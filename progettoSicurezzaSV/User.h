@@ -33,14 +33,14 @@ public:
 	int get_id();
 
 	// Returns this user's acceptance threshold
-	double get_threshold();
+	float get_threshold();
 
 	/*
 		Sets this user's acceptance threshold
 
 		threshold - threshold to set
 	*/
-	void set_threshold(double threshold);
+	void set_threshold(float threshold);
 
 	/*
 		Vector containing all User's Signatures
@@ -51,7 +51,7 @@ private:
 	// User ID
 	int id;
 	// User's acceptance threshold (Default value 0.70)
-	double threshold;
+	float threshold;
 };
 
 #endif //USER_CLASS

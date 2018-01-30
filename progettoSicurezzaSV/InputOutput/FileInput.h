@@ -11,6 +11,7 @@
 #include <iterator>
 #include <iomanip>
 #include <math.h>
+#include <boost/filesystem.hpp>
 
 #include "../Signature/Instant.h"
 #include "../Signature/Signature.h"
@@ -119,7 +120,7 @@ std::string calculate_averages(double threshold, std::vector<std::vector<std::st
 	step - step at which threshold value increses
 	stop - last threshold value used
 */
-void print_optimization(std::string threshold_path, std::string results_path, double first, double step, double stop);
+void print_optimization(std::string to_read, std::string results_path, double threshold);
 
 /*
 	Reads the [UserID].csv in path, determines the threshold value at which

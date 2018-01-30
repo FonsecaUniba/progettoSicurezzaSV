@@ -41,7 +41,7 @@ std::string load_model(int user_id);
 
 	user_id - ID for the user
 */
-double get_threshold(int user_id);
+float get_threshold(int user_id);
 
 /*
 	Changes the threshold for the specified user
@@ -49,6 +49,6 @@ double get_threshold(int user_id);
 	user_id - ID for the user
 	threshold - value to set as new threshold
 */
-void update_threshold(int user_id, double threshold);
+void update_threshold(int user_id, float threshold);
 
 #endif //DB_CONNECTOR
