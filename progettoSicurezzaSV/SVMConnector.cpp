@@ -154,7 +154,7 @@ bool test_signature(int userID, Signature to_check, float threshold) {
 	// For each instant's distance
 	for (int i = 0; i < distances.size(); i++) {
 		//Instant is accepted 
-		if (distances.at(i) > 0.00) { //Add threshold
+		if (distances.at(i) > threshold) {
 			accepted_count++;
 			//Possible plotting
 		}
