@@ -151,10 +151,11 @@ bool test_signature(int userID, Signature to_check, float threshold) {
 		if distance from hyperplane for each point is
 		greater than threshold
 	*/
-	// For each instant's distance
 	for (int i = 0; i < distances.size(); i++) {
+		double confidence = 1.0 / (1.0 + exp(-distances.at(i)));
+
 		//Instant is accepted 
-		if (distances.at(i) > threshold) {
+		if (confidence > threshold) {
 			accepted_count++;
 			//Possible plotting
 		}
