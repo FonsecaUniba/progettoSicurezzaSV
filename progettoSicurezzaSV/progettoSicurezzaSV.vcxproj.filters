@@ -25,30 +25,21 @@
     <Filter Include="File di intestazione\InputOutput">
       <UniqueIdentifier>{ecb40b21-3cc7-449b-ac9e-e0ec604fdb38}</UniqueIdentifier>
     </Filter>
+    <Filter Include="File di intestazione\Test">
+      <UniqueIdentifier>{d025b0a0-78f0-4af6-9383-313bbebf6596}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File di intestazione\stdafx">
+      <UniqueIdentifier>{0d5513df-a4c4-41ab-8a63-4698bea40a4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File di origine\Test">
+      <UniqueIdentifier>{bfc74065-7f18-408a-8417-a93b2a228866}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
-    <ClInclude Include="InputOutput\FileInput.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
-    <ClInclude Include="Signature\Instant.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
-    <ClInclude Include="Signature\Signature.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
-    <ClInclude Include="InputOutput\stdafx.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
-    <ClInclude Include="Signature\stdafx.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
     <ClInclude Include="User.h">
@@ -57,23 +48,41 @@
     <ClInclude Include="SVMConnector.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="Signature\Signature.h">
+      <Filter>File di intestazione\Signature</Filter>
+    </ClInclude>
+    <ClInclude Include="Signature\Instant.h">
+      <Filter>File di intestazione\Signature</Filter>
+    </ClInclude>
     <ClInclude Include="InputOutput\DBConnector.h">
-      <Filter>File di intestazione</Filter>
+      <Filter>File di intestazione\InputOutput</Filter>
     </ClInclude>
-    <ClInclude Include="Test\stdafx.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
-    <ClInclude Include="Test\InstantTest.h">
-      <Filter>File di intestazione</Filter>
+    <ClInclude Include="InputOutput\FileInput.h">
+      <Filter>File di intestazione\InputOutput</Filter>
     </ClInclude>
     <ClInclude Include="Test\UserTest.h">
-      <Filter>File di intestazione</Filter>
+      <Filter>File di intestazione\Test</Filter>
     </ClInclude>
-    <ClInclude Include="Test\DBConnectorTest.h">
-      <Filter>File di intestazione</Filter>
+    <ClInclude Include="Test\InstantTest.h">
+      <Filter>File di intestazione\Test</Filter>
     </ClInclude>
     <ClInclude Include="Test\FileInputTest.h">
-      <Filter>File di intestazione</Filter>
+      <Filter>File di intestazione\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Test\DBConnectorTest.h">
+      <Filter>File di intestazione\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="InputOutput\stdafx.h">
+      <Filter>File di intestazione\stdafx</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>File di intestazione\stdafx</Filter>
+    </ClInclude>
+    <ClInclude Include="Test\stdafx.h">
+      <Filter>File di intestazione\stdafx</Filter>
+    </ClInclude>
+    <ClInclude Include="Signature\stdafx.h">
+      <Filter>File di intestazione\stdafx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -83,15 +92,6 @@
     <ClCompile Include="progettoSicurezzaSV.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
-    <ClCompile Include="InputOutput\FileInput.cpp">
-      <Filter>File di origine</Filter>
-    </ClCompile>
-    <ClCompile Include="Signature\Instant.cpp">
-      <Filter>File di origine</Filter>
-    </ClCompile>
-    <ClCompile Include="Signature\Signature.cpp">
-      <Filter>File di origine</Filter>
-    </ClCompile>
     <ClCompile Include="User.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
@@ -99,19 +99,28 @@
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="InputOutput\DBConnector.cpp">
-      <Filter>File di origine</Filter>
+      <Filter>File di origine\InputOutput</Filter>
     </ClCompile>
-    <ClCompile Include="Test\InstantTest.cpp">
-      <Filter>File di origine</Filter>
-    </ClCompile>
-    <ClCompile Include="Test\UserTest.cpp">
-      <Filter>File di origine</Filter>
+    <ClCompile Include="InputOutput\FileInput.cpp">
+      <Filter>File di origine\InputOutput</Filter>
     </ClCompile>
     <ClCompile Include="Test\DBConnectorTest.cpp">
-      <Filter>File di origine</Filter>
+      <Filter>File di origine\Test</Filter>
     </ClCompile>
     <ClCompile Include="Test\FileInputTest.cpp">
-      <Filter>File di origine</Filter>
+      <Filter>File di origine\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Test\InstantTest.cpp">
+      <Filter>File di origine\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Test\UserTest.cpp">
+      <Filter>File di origine\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Signature\Instant.cpp">
+      <Filter>File di origine\Signature</Filter>
+    </ClCompile>
+    <ClCompile Include="Signature\Signature.cpp">
+      <Filter>File di origine\Signature</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

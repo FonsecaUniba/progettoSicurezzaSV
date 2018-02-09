@@ -71,6 +71,15 @@ public:
 	int get_pressure();
 	// Returns timestamp
 	int get_timestamp();
+	/*
+		Normalizes the values
+
+		Array order is {DISPLACEMENT, VELOCITY, ACCELERATION, PRESSURE}
+
+		min - Array containg the min value of each parameter
+		max - Array containg the max value of each parameter
+	*/
+	void normalize_values(float min[], float max[]);
 
 private:
 	// Position X of Point, used for plotting

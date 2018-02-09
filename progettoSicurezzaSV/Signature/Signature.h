@@ -21,6 +21,8 @@ public:
 	Signature();
 	// Signature Deconstructor
 	~Signature();
+	// Normalizes Signature Data
+	void normalize();
 
 	// Vector of Instant representing the time function of the Signature
 	std::vector<Instant> time_sequence;

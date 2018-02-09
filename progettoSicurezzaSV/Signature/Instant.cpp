@@ -81,3 +81,16 @@ int Instant::get_pressure() {
 int Instant::get_timestamp() {
 	return this->timestamp;
 }
+
+void Instant::normalize_values(float min[], float max[]) {
+	enum parameters : int {DISPLACEMENT, VELOCITY, ACCELERATION, PRESSURE};
+	
+	/*
+		Normalizes parameters by substracting the min value of the parameter
+		and diving the value by the difference by min and max values of the parameter
+	*/
+	this->displacement = (this->displacement - min[DISPLACEMENT]) / (max[DISPLACEMENT] - min[DISPLACEMENT]);
+	this->velocity = (this->velocity - min[VELOCITY]) / (max[VELOCITY] - min[VELOCITY]);
+	this->acceleration = (this->acceleration - min[ACCELERATION]) / (max[ACCELERATION] - min[ACCELERATION]);
+	this->pressure = (this->pressure - min[PRESSURE]) / (max[PRESSURE] - min[PRESSURE]);
+}
