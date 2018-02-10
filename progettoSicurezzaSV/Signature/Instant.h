@@ -4,6 +4,7 @@
 #define INSTANT_CLASS
 
 #include <string>
+#include <vector>
 
 class Instant
 {
@@ -68,7 +69,7 @@ public:
 	// Returns the Instantaneous Acceleration
 	float get_acceleration();
 	// Returns the Instantaneous Pressure
-	int get_pressure();
+	float get_pressure();
 	// Returns timestamp
 	int get_timestamp();
 	/*
@@ -76,10 +77,10 @@ public:
 
 		Array order is {DISPLACEMENT, VELOCITY, ACCELERATION, PRESSURE}
 
-		min - Array containg the min value of each parameter
-		max - Array containg the max value of each parameter
+		min - Vector containg the min value of each parameter
+		max - Vector containg the max value of each parameter
 	*/
-	void normalize_values(float min[], float max[]);
+	void normalize_values(std::vector<float> min, std::vector<float> max);
 
 private:
 	// Position X of Point, used for plotting
@@ -93,7 +94,7 @@ private:
 	// Instantaneous Acceleration
 	float acceleration;
 	// Instantaneous pressure
-	int pressure;
+	float pressure;
 	// Instant Time
 	int timestamp;
 };

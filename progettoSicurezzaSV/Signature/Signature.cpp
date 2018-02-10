@@ -13,22 +13,77 @@ Signature::~Signature()
 	this->time_sequence.clear();
 }
 
-void Signature::normalize() {
+/*
+	Checks if min values has to be updated
+
+	min - Vector containing current minimum
+	instant - Instant to check
+*/
+std::vector<float> check_min(std::vector<float> min, Instant instant) {
 	enum parameters : int { DISPLACEMENT, VELOCITY, ACCELERATION, PRESSURE };
+
+	if (min.at(DISPLACEMENT) > instant.get_displacement()) {
+		min.at(DISPLACEMENT) = instant.get_displacement();
+	}
+	if (min.at(VELOCITY) > instant.get_velocity()) {
+		min.at(VELOCITY) = instant.get_velocity();
+	}
+	if (min.at(ACCELERATION) > instant.get_acceleration()) {
+		min.at(ACCELERATION) = instant.get_acceleration();
+	}
+	if (min.at(PRESSURE) > instant.get_pressure()) {
+		min.at(PRESSURE) = instant.get_pressure();
+	}
+
+	return min;
+}
+
+/*
+	Checks if max values has to be updated
+
+	max - Vector containing current maximums
+	instant - Instant to check
+*/
+std::vector<float> check_max(std::vector<float> max, Instant instant) {
+	enum parameters : int { DISPLACEMENT, VELOCITY, ACCELERATION, PRESSURE };
+
+	if (max.at(DISPLACEMENT) < instant.get_displacement()) {
+		max.at(DISPLACEMENT) = instant.get_displacement();
+	}
+	if (max.at(VELOCITY) < instant.get_velocity()) {
+		max.at(VELOCITY) = instant.get_velocity();
+	}
+	if (max.at(ACCELERATION) < instant.get_acceleration()) {
+		max.at(ACCELERATION) = instant.get_acceleration();
+	}
+	if (max.at(PRESSURE) < instant.get_pressure()) {
+		max.at(PRESSURE) = instant.get_pressure();
+	}
+
+	return max;
+}
+
+void Signature::normalize() {
 	const int PARAM_COUNT = 4;
+	const int FIRST = 0;
 
-	float min[PARAM_COUNT];
-	float max[PARAM_COUNT];
+	std::vector<float> min;
+	std::vector<float> max;
 
-	min[DISPLACEMENT] = this->time_sequence.at(0).get_displacement();
-	min[VELOCITY] = this->time_sequence.at(0).get_velocity();
-	min[ACCELERATION] = this->time_sequence.at(0).get_acceleration();
-	min[PRESSURE] = this->time_sequence.at(0).get_pressure();
+	//Reserve space for PARAM_COUNT parameters
+	min.reserve(PARAM_COUNT);
+	max.reserve(PARAM_COUNT);
 
-	max[DISPLACEMENT] = this->time_sequence.at(0).get_displacement();
-	max[VELOCITY] = this->time_sequence.at(0).get_velocity();
-	max[ACCELERATION] = this->time_sequence.at(0).get_acceleration();
-	max[PRESSURE] = this->time_sequence.at(0).get_pressure();
+	//Set FIRST element as first minimum
+	min.push_back( this->time_sequence.at(FIRST).get_displacement() );
+	min.push_back( this->time_sequence.at(FIRST).get_velocity() );
+	min.push_back( this->time_sequence.at(FIRST).get_acceleration() );
+	min.push_back( this->time_sequence.at(FIRST).get_pressure() );
+	//Set FIRST element as first maximum
+	max.push_back(this->time_sequence.at(FIRST).get_displacement());
+	max.push_back(this->time_sequence.at(FIRST).get_velocity());
+	max.push_back(this->time_sequence.at(FIRST).get_acceleration());
+	max.push_back(this->time_sequence.at(FIRST).get_pressure());
 
 	//For each Instant
 	for (int i = 1; i < this->time_sequence.size(); i++) {
@@ -36,32 +91,9 @@ void Signature::normalize() {
 		Instant& instant = this->time_sequence.at(i);
 
 		//Check if current instant value is lower than current minimum
-		if (min[DISPLACEMENT] > instant.get_displacement()) {
-			min[DISPLACEMENT] = instant.get_displacement();
-		}
-		if (min[VELOCITY] > instant.get_velocity()) {
-			min[VELOCITY] = instant.get_velocity();
-		}
-		if (min[ACCELERATION] > instant.get_acceleration()) {
-			min[ACCELERATION] = instant.get_acceleration();
-		}
-		if (min[PRESSURE] > instant.get_pressure()) {
-			min[PRESSURE] = instant.get_pressure();
-		}
-
+		min = check_min(min, instant);
 		//Check if current instant value is lower than current maximum
-		if (max[DISPLACEMENT] < instant.get_displacement()) {
-			max[DISPLACEMENT] = instant.get_displacement();
-		}
-		if (max[VELOCITY] < instant.get_velocity()) {
-			max[VELOCITY] = instant.get_velocity();
-		}
-		if (max[ACCELERATION] < instant.get_acceleration()) {
-			max[ACCELERATION] = instant.get_acceleration();
-		}
-		if (max[PRESSURE] < instant.get_pressure()) {
-			max[PRESSURE] = instant.get_pressure();
-		}
+		max = check_max(max, instant);
 	}
 
 	//Normalize values

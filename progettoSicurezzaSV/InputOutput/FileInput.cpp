@@ -89,6 +89,8 @@ Signature read_signature(std::string file_to_read, bool is_genuine)
 		current_signature.time_sequence.push_back(current_instant);
 	}
 
+	current_signature.normalize();
+
 	return current_signature;
 }
 

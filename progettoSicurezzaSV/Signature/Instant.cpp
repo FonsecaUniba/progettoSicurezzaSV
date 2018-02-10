@@ -17,7 +17,7 @@ Instant::Instant(int x0, int y0, int t0, int p, int x1, int y1, int t1)
 		Computes Displacement between point A(x0,y0) and B(x1,y1)
 		using the Pythagorean theorem 
 	*/
-	this->displacement = sqrt( pow( (x1-x0), 2) + pow( (y1-y0), 2) );
+	this->displacement = (float) sqrt( pow( (x1-x0), 2) + pow( (y1-y0), 2) );
 	
 	/*
 		Computes Velocity as Displacement/Time
@@ -32,7 +32,7 @@ Instant::Instant(int x0, int y0, int t0, int p, int x1, int y1, int t1)
 	/*
 		Stores pressure without applying changes
 	*/
-	this->pressure = p;
+	this->pressure = (float) p;
 }
 
 Instant::~Instant()
@@ -74,7 +74,7 @@ float Instant::get_acceleration() {
 	return this->acceleration;
 }
 
-int Instant::get_pressure() {
+float Instant::get_pressure() {
 	return this->pressure;
 }
 
@@ -82,15 +82,15 @@ int Instant::get_timestamp() {
 	return this->timestamp;
 }
 
-void Instant::normalize_values(float min[], float max[]) {
+void Instant::normalize_values(std::vector<float> min, std::vector<float> max) {
 	enum parameters : int {DISPLACEMENT, VELOCITY, ACCELERATION, PRESSURE};
 	
 	/*
 		Normalizes parameters by substracting the min value of the parameter
 		and diving the value by the difference by min and max values of the parameter
 	*/
-	this->displacement = (this->displacement - min[DISPLACEMENT]) / (max[DISPLACEMENT] - min[DISPLACEMENT]);
-	this->velocity = (this->velocity - min[VELOCITY]) / (max[VELOCITY] - min[VELOCITY]);
-	this->acceleration = (this->acceleration - min[ACCELERATION]) / (max[ACCELERATION] - min[ACCELERATION]);
-	this->pressure = (this->pressure - min[PRESSURE]) / (max[PRESSURE] - min[PRESSURE]);
+	this->displacement = (this->displacement - min.at(DISPLACEMENT)) / (max.at(DISPLACEMENT) - min.at(DISPLACEMENT));
+	this->velocity = (this->velocity - min.at(VELOCITY)) / (max.at(VELOCITY) - min.at(VELOCITY));
+	this->acceleration = (this->acceleration - min.at(ACCELERATION)) / (max.at(ACCELERATION) - min.at(ACCELERATION));
+	this->pressure = (this->pressure - min.at(PRESSURE)) / (max.at(PRESSURE) - min.at(PRESSURE));
 }

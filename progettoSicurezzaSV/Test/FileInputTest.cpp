@@ -25,8 +25,8 @@ void test_split_string() {
 	std::string to_test = "Str1nga di prova";
 	std::vector<std::string> result = split_string(to_test);
 
-	const int EXPECTED_SIZE = 3;
-	int returned_size = result.size();
+	const size_t EXPECTED_SIZE = 3;
+	size_t returned_size = result.size();
 
 	bool size_check = (EXPECTED_SIZE == returned_size);
 
@@ -45,10 +45,10 @@ void test_read_signature() {
 	*/
 	std::string path = "C:/Signatures/TestingSubset/001_f_1.sig";
 	bool is_genuine = false;
-	int EXPECTED_SIZE = 698;
+	size_t EXPECTED_SIZE = 698;
 
 	Signature returned_signature = read_signature(path, is_genuine);
-	int returned_size = returned_signature.time_sequence.size();
+	size_t returned_size = returned_signature.time_sequence.size();
 
 	/* Signature file name contains "_f_" so it's forgery
 		genuine_check==true when is_genuine==false */
@@ -114,10 +114,10 @@ void test_read_signature() {
 void test_read_all_signatures() {
 	std::string path = "Signatures/TestingSubset/";
 	std::string user = "001";
-	const int EXPECTED_SIZE = 8;
+	const size_t EXPECTED_SIZE = 8;
 
 	std::vector<Signature> returned_signatures = read_all_signatures(path, user);
-	int returned_size = returned_signatures.size();
+	size_t returned_size = returned_signatures.size();
 
 	bool size_check = EXPECTED_SIZE == returned_size;
 
@@ -132,10 +132,10 @@ void test_read_all_signatures() {
 
 void test_read_all_users() {
 	bool isTraining = true;
-	const int EXPECTED_SIZE = 100;
+	const size_t EXPECTED_SIZE = 100;
 
 	std::vector<User> returned_users = read_all_users(isTraining);
-	int returned_size = returned_users.size();
+	size_t returned_size = returned_users.size();
 
 	bool size_check = EXPECTED_SIZE == returned_size;
 
@@ -179,8 +179,8 @@ void test_split_by_comma() {
 	std::string to_test = "Str1nga,di,prova";
 	std::vector<std::string> result = split_by_comma(to_test);
 
-	const int EXPECTED_SIZE = 3;
-	int returned_size = result.size();
+	const size_t EXPECTED_SIZE = 3;
+	size_t returned_size = result.size();
 
 	bool size_check = EXPECTED_SIZE == returned_size;
 
