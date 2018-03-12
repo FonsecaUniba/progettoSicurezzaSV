@@ -3,23 +3,55 @@
 
 #include <fstream>
 
+/*
+	Approximates the Signature to get WANTED_LENGTH Points
+*/
+std::vector<std::vector<float>> approximation(Signature to_approx) {
+	const int WANTED_LENGTH = 256;
+	const int PARAM_COUNT = 5;
+	const int FIRST = 0;
+
+	std::vector<std::vector<float>> result;
+	result.reserve(WANTED_LENGTH);
+	std::vector<float> to_push;
+	to_push.reserve(PARAM_COUNT);
+
+	// Determines distance between points
+	double step = ( (double) to_approx.time_sequence.size() ) / WANTED_LENGTH;
+
+	double i = 0.0;
+	while ((i < to_approx.time_sequence.size()) && (result.size() < WANTED_LENGTH)) {
+		int j = (int)floor(i);
+
+		//Store signature parameters at first
+		to_push.push_back(to_approx.time_sequence.at(j).get_displacement());
+		to_push.push_back(to_approx.time_sequence.at(j).get_velocity());
+		to_push.push_back(to_approx.time_sequence.at(j).get_acceleration());
+		to_push.push_back(to_approx.time_sequence.at(j).get_pressure());
+
+		//Store parameters vector in result vector
+		result.push_back(to_push);
+		//Clear temporary vector
+		to_push.clear();
+		
+		i += step;
+	}
+
+	return result;
+}
+
 void train_svm(User to_train) {
 
 	//Stores User ID
 	int id = to_train.get_id();
 
-	//Instant Counter
-	int instant_count = 0;
 	//Label and Training Vector
 	std::vector<int> label_vector;
 	std::vector<std::vector<float>> training_vector;
 
-	//For each Instant in each Signature
+	//For each Signature
 	for (int i = 0; i < to_train.user_signatures.size(); i++) {
-		for (int j = 0; j < to_train.user_signatures.at(i).time_sequence.size(); j++) {
-			//Counts the elements
-			instant_count++;
-
+		/*for (int j = 0; j < to_train.user_signatures.at(i).time_sequence.size(); j++) {
 			//Add 1 if Signature is genuine, -1 otherwise
 			int to_add = (to_train.user_signatures.at(i).is_genuine) ? 1 : -1;
 			label_vector.push_back(to_add);
@@ -39,6 +71,20 @@ void train_svm(User to_train) {
 			training_vector.push_back(to_push);
 			//Clears temporary vector
 			to_push.clear();
+		}*/
+
+
+		//Approximates the signature to a given size and stores data
+		std::vector<std::vector<float>> signature_data = approximation(to_train.user_signatures.at(i));
+
+		//For every element in the signature
+		for (int j = 0; j < signature_data.size(); j++) {
+			//Add 1 if Signature is genuine, -1 otherwise
+			int to_add = (to_train.user_signatures.at(i).is_genuine) ? 1 : -1;
+			label_vector.push_back(to_add);
+
+			//Add element to training_vector
+			training_vector.push_back(signature_data.at(j));
 		}
 	}
 
@@ -97,15 +143,12 @@ std::vector<float> compute_distances(int userID, Signature to_check, std::string
 	//Vector to store instant
 	std::vector<float> instant_vector;
 
-	//Reserves enough space for parameters
-	instant_vector.reserve(5);
-
 	//Sets up the SVM
 	cv::Ptr<cv::ml::SVM> svm = cv::ml::SVM::load(path);
 
 	try {
 		//For each instant in the time sequence
-		for (int i = 0; i < to_check.time_sequence.size(); i++) {
+		/*for (int i = 0; i < to_check.time_sequence.size(); i++) {
 			//Save each parameter value
 			instant_vector.push_back(to_check.time_sequence.at(i).get_displacement());
 			instant_vector.push_back(to_check.time_sequence.at(i).get_velocity());
@@ -126,6 +169,23 @@ std::vector<float> compute_distances(int userID, Signature to_check, std::string
 			results.push_back(distance);
 			//Clears Vector
 			instant_vector.clear();
+		}*/
+
+		//Approximates Signature to given length
+		std::vector<std::vector<float>> signature_data = approximation(to_check);
+		//For each element in the signature
+		for (int i = 0; i < signature_data.size(); i++) {
+			//Creates Mat to test
+			cv::Mat test_mat(signature_data.at(i), true); //4 rows - 1 col
+			test_mat.convertTo(test_mat, CV_32F);
+			cv::Mat trans_mat = test_mat.t(); //1 row - 4 cols
+
+			//Predict distance
+			float distance = svm->predict(trans_mat, cv::noArray(), true); //Returns distance from plane
+			//float distance = svm->predict(trans_mat); //Returns decision
+
+			//Adds Distance to results vector
+			results.push_back(distance);
 		}
 	}
 	catch (cv::Exception &e) {

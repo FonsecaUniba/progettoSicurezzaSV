@@ -3,12 +3,12 @@
 #ifndef DB_CONNECTOR
 #define DB_CONNECTOR
 
-#include <string>
 #include <cppconn/driver.h>
 #include <cppconn/connection.h>
 #include <cppconn/exception.h>
 #include <cppconn/prepared_statement.h>
 #include <cppconn/resultset.h>
+#include <string>
 
 /*
 	Interface to connect the software to a mySQL Database

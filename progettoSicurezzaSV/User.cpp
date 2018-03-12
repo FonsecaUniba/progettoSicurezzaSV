@@ -5,7 +5,7 @@
 User::User(int id)
 {
 	this->id = id;
-	this->threshold = 0.70;
+	this->threshold = (float) 0.70;
 }
 
 
