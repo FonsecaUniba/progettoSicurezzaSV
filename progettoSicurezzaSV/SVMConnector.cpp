@@ -9,7 +9,9 @@
 std::vector<std::vector<float>> padding(Signature to_pad) {
 	const int MAX_LENGTH = 16384;
 	std::vector<std::vector<float>> result;
+	result.reserve(MAX_LENGTH);
 	std::vector<float> to_add;
+	to_add.reserve(5);
 
 	for (Instant elem : to_pad.time_sequence) {
 		to_add.clear();
@@ -68,7 +70,7 @@ void train_svm(User to_train) {
 		}*/
 
 
-		//Approximates the signature to a given size and stores data
+		//Pad the signature to a given size and stores data
 		std::vector<std::vector<float>> signature_data = padding(to_train.user_signatures.at(i));
 
 		//For every element in the signature
@@ -141,31 +143,8 @@ std::vector<float> compute_distances(int userID, Signature to_check, std::string
 	cv::Ptr<cv::ml::SVM> svm = cv::ml::SVM::load(path);
 
 	try {
-		//For each instant in the time sequence
-		/*for (int i = 0; i < to_check.time_sequence.size(); i++) {
-			//Save each parameter value
-			instant_vector.push_back(to_check.time_sequence.at(i).get_displacement());
-			instant_vector.push_back(to_check.time_sequence.at(i).get_velocity());
-			instant_vector.push_back(to_check.time_sequence.at(i).get_acceleration());
-			instant_vector.push_back(to_check.time_sequence.at(i).get_pressure());
-			instant_vector.push_back((float) to_check.time_sequence.at(i).get_timestamp());
 
-			//Creates Mat to test
-			cv::Mat test_mat(instant_vector, true); //4 rows - 1 col
-			test_mat.convertTo(test_mat, CV_32F);
-			cv::Mat trans_mat = test_mat.t(); //1 row - 4 cols
-
-			//Predict distance
-			float distance = svm->predict(trans_mat, cv::noArray(), true); //Returns distance from plane
-			//float distance = svm->predict(trans_mat); //Returns decision
-
-			//Adds Distance to results vector
-			results.push_back(distance);
-			//Clears Vector
-			instant_vector.clear();
-		}*/
-
-		//Approximates Signature to given length
+		//Pad Signature to given length
 		std::vector<std::vector<float>> signature_data = padding(to_check);
 		//For each element in the signature
 		for (int i = 0; i < signature_data.size(); i++) {
