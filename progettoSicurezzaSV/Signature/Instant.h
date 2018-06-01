@@ -46,6 +46,10 @@ public:
 		Instant i2 = Instant(8, 1, 30, 10, 4, 3, 20);
 	*/
 	Instant(int x0, int y0, int t0, int p0, int x1, int y1, int t1);
+	/*
+		Construct an empty Instant for zero padding
+	*/
+	Instant();
 	//	Deconstructor for a Signature's Instant
 	~Instant();
 

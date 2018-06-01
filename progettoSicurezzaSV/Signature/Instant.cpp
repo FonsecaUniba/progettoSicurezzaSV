@@ -35,6 +35,38 @@ Instant::Instant(int x0, int y0, int t0, int p, int x1, int y1, int t1)
 	this->pressure = (float) p;
 }
 
+Instant::Instant() {
+	// Stores 2D representation
+	this->x = 0;
+	this->y = 0;
+
+	/*
+	Stores the timestamp
+	*/
+	this->timestamp = 0;
+
+	/*
+	Computes Displacement between point A(x0,y0) and B(x1,y1)
+	using the Pythagorean theorem
+	*/
+	this->displacement = 0.0;
+
+	/*
+	Computes Velocity as Displacement/Time
+	*/
+	this->velocity = 0.0;
+
+	/*
+	Computes Acceleration as Velocity/Time
+	*/
+	this->acceleration = 0.0;
+
+	/*
+	Stores pressure without applying changes
+	*/
+	this->pressure = 0.0;
+}
+
 Instant::~Instant()
 {
 	// Does Nothing
