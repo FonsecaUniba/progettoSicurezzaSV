@@ -200,7 +200,7 @@ bool test_signature(int userID, Signature to_check, float threshold) {
 	}
 
 	//Return decision based on majority
-	return (accepted_count > rejected_count) ? false : true;
+	return (accepted_count > rejected_count) ? true : false;
 }
 
 bool test_signature(int userID, Signature to_check) {
