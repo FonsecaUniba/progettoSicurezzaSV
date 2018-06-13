@@ -15,52 +15,54 @@
 #include "Signature/Signature.h"
 #include "Signature/Instant.h"
 
-/*
-	Functions used to interact with OpenCV SVM Library
+namespace svm_connector{
+	/*
+		Functions used to interact with OpenCV SVM Library
 	
-	Author: Nicola Oreste Fonseca
-	Created on: 26 December 2017
-*/
+		Author: Nicola Oreste Fonseca
+		Created on: 26 December 2017
+	*/
 
-/*
-	Trains the System to recognize an User
-	The SVM will be saved in /SVMs/[UserID].xml
+	/*
+		Trains the System to recognize an User
+		The SVM will be saved in /SVMs/[UserID].xml
 
-	to_train - User to train the system for
-*/
-void train_svm(User to_train);
+		to_train - User to train the system for
+	*/
+	void train_svm(User to_train);
 
-/*
-	Given a Signature and a user id,
-	loads the SVM from file path
-	and returns a vector
-	containing the distances between
-	each Instant and the hyperplane
+	/*
+		Given a Signature and a user id,
+		loads the SVM from file path
+		and returns a vector
+		containing the distances between
+		each Instant and the hyperplane
 
-	userID - User to check Signature of
-	to_check - Signature to predict
-	path - Path where SVM model is stored
-*/
-std::vector<float> compute_distances(int userID, Signature to_check, std::string path);
+		userID - User to check Signature of
+		to_check - Signature to predict
+		path - Path where SVM model is stored
+	*/
+	std::vector<float> compute_distances(int userID, Signature to_check, std::string path);
 
-/*
-	Tests a user signature at a given
-	threshold
+	/*
+		Tests a user signature at a given
+		threshold
 
-	userID - User to check Signature of
-	to_check - Signature to predict
-	threshold - Threshold at which the signature is accepted
-*/
-bool test_signature(int userID, Signature to_check, float threshold);
+		userID - User to check Signature of
+		to_check - Signature to predict
+		threshold - Threshold at which the signature is accepted
+	*/
+	bool test_signature(int userID, Signature to_check, float threshold);
 
-/*
-	Tests a user signature, the
-	threshold value will be taken from
-	the database
+	/*
+		Tests a user signature, the
+		threshold value will be taken from
+		the database
 
-	userID - User to check Signature of
-	to_check - Signature to predict
-*/
-bool test_signature(int userID, Signature to_check);
+		userID - User to check Signature of
+		to_check - Signature to predict
+	*/
+	bool test_signature(int userID, Signature to_check);
+}
 
 #endif //SVM_CONNECTOR
