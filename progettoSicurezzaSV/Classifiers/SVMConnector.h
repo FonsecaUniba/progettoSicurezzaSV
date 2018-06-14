@@ -9,11 +9,11 @@
 #include <opencv2/ml/ml.hpp>
 #include <boost/array.hpp>
 
-#include "InputOutput/DBConnector.h"
+#include "../InputOutput/DBConnector.h"
 
-#include "User.h"
-#include "Signature/Signature.h"
-#include "Signature/Instant.h"
+#include "../User.h"
+#include "../Signature/Signature.h"
+#include "../Signature/Instant.h"
 
 namespace svm_connector{
 	/*

@@ -34,6 +34,12 @@
     <Filter Include="File di origine\Test">
       <UniqueIdentifier>{bfc74065-7f18-408a-8417-a93b2a228866}</UniqueIdentifier>
     </Filter>
+    <Filter Include="File di intestazione\Classifiers">
+      <UniqueIdentifier>{8c51ea5b-d025-497a-bda8-ef2048b05048}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File di origine\Classifiers">
+      <UniqueIdentifier>{ce2c71f2-c5e5-44c9-becf-c22931a480df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -43,9 +49,6 @@
       <Filter>File di intestazione</Filter>
     </ClInclude>
     <ClInclude Include="User.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
-    <ClInclude Include="SVMConnector.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
     <ClInclude Include="Signature\Signature.h">
@@ -84,6 +87,15 @@
     <ClInclude Include="Signature\stdafx.h">
       <Filter>File di intestazione\stdafx</Filter>
     </ClInclude>
+    <ClInclude Include="Classifiers\stdafx.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="Classifiers\DecisionTree.h">
+      <Filter>File di intestazione\Classifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="Classifiers\SVMConnector.h">
+      <Filter>File di intestazione\Classifiers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -93,9 +105,6 @@
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="User.cpp">
-      <Filter>File di origine</Filter>
-    </ClCompile>
-    <ClCompile Include="SVMConnector.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="InputOutput\DBConnector.cpp">
@@ -121,6 +130,12 @@
     </ClCompile>
     <ClCompile Include="Signature\Signature.cpp">
       <Filter>File di origine\Signature</Filter>
+    </ClCompile>
+    <ClCompile Include="Classifiers\SVMConnector.cpp">
+      <Filter>File di origine\Classifiers</Filter>
+    </ClCompile>
+    <ClCompile Include="Classifiers\DecisionTree.cpp">
+      <Filter>File di origine\Classifiers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
