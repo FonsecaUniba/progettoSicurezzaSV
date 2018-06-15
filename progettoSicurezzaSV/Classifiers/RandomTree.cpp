@@ -1,10 +1,10 @@
 #include "stdafx.h"
-#include "DecisionTree.h"
+#include "RandomTree.h"
 #include <boost/filesystem.hpp>
 
 #include <fstream>
 
-namespace decision_tree_connector {
+namespace randomtree_connector {
 	/*
 	Pads the Signature to get WANTED_LENGTH Points
 	*/
@@ -82,13 +82,13 @@ namespace decision_tree_connector {
 			//Declares Training Data using training_mat and labels_mat
 			cv::Ptr<cv::ml::TrainData> td = cv::ml::TrainData::create(training_mat, cv::ml::ROW_SAMPLE, labels_mat);
 
-			//Sets up DecisionTree Classifier
-			cv::Ptr<cv::ml::DTrees> tree = cv::ml::DTrees::create();
-			//Trains DecisionTree Classifier
+			//Sets up RandomTree Classifier
+			cv::Ptr<cv::ml::RTrees> tree = cv::ml::RTrees::create();
+			//Trains RandomTree Classifier
 			tree->train(td);
 
-			//Sets DecisionTree save path
-			std::string path = "Classifiers/DTrees/" + std::to_string(id) + ".xml";
+			//Sets RandomTree save path
+			std::string path = "Classifiers/RTrees/" + std::to_string(id) + ".xml";
 			if (boost::filesystem::exists(path)) {
 				boost::filesystem::path dir(path);
 				if (boost::filesystem::create_directory(dir))
@@ -112,8 +112,8 @@ namespace decision_tree_connector {
 		//Vector to store instant
 		std::vector<float> instant_vector;
 
-		//Sets up the Decision Tree
-		cv::Ptr<cv::ml::DTrees> tree = cv::ml::DTrees::load(path);
+		//Sets up the RandomTree
+		cv::Ptr<cv::ml::RTrees> tree = cv::ml::RTrees::load(path);
 
 		try {
 
@@ -128,9 +128,9 @@ namespace decision_tree_connector {
 
 												  //Predict distance
 				float distance = tree->predict(trans_mat, cv::noArray(), true); //Returns distance from plane
-																			   //float distance = tree->predict(trans_mat); //Returns decision
+																				//float distance = tree->predict(trans_mat); //Returns decision
 
-																			   //Adds Distance to results vector
+																				//Adds Distance to results vector
 				results.push_back(distance);
 			}
 		}
@@ -143,11 +143,11 @@ namespace decision_tree_connector {
 
 	bool test_signature(int userID, Signature to_check, float threshold) {
 		//Loads path where Tree are stored
-		std::string path = "Classifiers/DTrees/" + std::to_string(userID) + ".xml";
+		std::string path = "Classifiers/RTrees/" + std::to_string(userID) + ".xml";
 		//std::string path = load_model(userID);
 
 		//Computes distance for each instant
-		std::vector<float> distances = decision_tree_connector::compute_distances(userID, to_check, path);
+		std::vector<float> distances = randomtree_connector::compute_distances(userID, to_check, path);
 
 		int accepted_count = 0;
 		int rejected_count = 0;
@@ -180,6 +180,6 @@ namespace decision_tree_connector {
 		//Get Threshold from DB
 		float threshold = get_threshold(userID);
 		//Call test_signature
-		return decision_tree_connector::test_signature(userID, to_check, threshold);
+		return randomtree_connector::test_signature(userID, to_check, threshold);
 	}
 }

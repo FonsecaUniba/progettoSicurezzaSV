@@ -38,7 +38,7 @@ namespace svm_connector {
 		return result;
 	}
 
-	void train_svm(User to_train) {
+	void train_classifier(User to_train) {
 
 		//Stores User ID
 		int id = to_train.get_id();
@@ -157,7 +157,7 @@ namespace svm_connector {
 
 	bool test_signature(int userID, Signature to_check, float threshold) {
 		//Loads path where SVMs are stored
-		std::string path = "SVMs/" + std::to_string(userID) + ".xml";
+		std::string path = "Classifiers/SVMs/" + std::to_string(userID) + ".xml";
 		//std::string path = load_model(userID);
 
 		//Computes distance for each instant

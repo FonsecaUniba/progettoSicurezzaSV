@@ -1,10 +1,10 @@
 #include "stdafx.h"
-#include "DecisionTree.h"
+#include "NormalBayes.h"
 #include <boost/filesystem.hpp>
 
 #include <fstream>
 
-namespace decision_tree_connector {
+namespace normalbayes_connector {
 	/*
 	Pads the Signature to get WANTED_LENGTH Points
 	*/
@@ -82,13 +82,13 @@ namespace decision_tree_connector {
 			//Declares Training Data using training_mat and labels_mat
 			cv::Ptr<cv::ml::TrainData> td = cv::ml::TrainData::create(training_mat, cv::ml::ROW_SAMPLE, labels_mat);
 
-			//Sets up DecisionTree Classifier
-			cv::Ptr<cv::ml::DTrees> tree = cv::ml::DTrees::create();
-			//Trains DecisionTree Classifier
-			tree->train(td);
+			//Sets up NormalBayes Classifier
+			cv::Ptr<cv::ml::NormalBayesClassifier> classifier = cv::ml::NormalBayesClassifier::create();
+			//Trains NormalBayes Classifier
+			classifier->train(td);
 
-			//Sets DecisionTree save path
-			std::string path = "Classifiers/DTrees/" + std::to_string(id) + ".xml";
+			//Sets NormalBayes save path
+			std::string path = "Classifiers/NBayes/" + std::to_string(id) + ".xml";
 			if (boost::filesystem::exists(path)) {
 				boost::filesystem::path dir(path);
 				if (boost::filesystem::create_directory(dir))
@@ -96,9 +96,9 @@ namespace decision_tree_connector {
 					std::cerr << "Directory Created" << std::endl;
 				}
 			}
-			//Save Tree to file
-			tree->save(path);
-			//Store Tree path on DB Currently disabled
+			//Save NormalBayes to file
+			classifier->save(path);
+			//Store NormalBayes path on DB Currently disabled
 			//save_model(id, path);
 		}
 		catch (cv::Exception &e) {
@@ -112,8 +112,8 @@ namespace decision_tree_connector {
 		//Vector to store instant
 		std::vector<float> instant_vector;
 
-		//Sets up the Decision Tree
-		cv::Ptr<cv::ml::DTrees> tree = cv::ml::DTrees::load(path);
+		//Sets up the NormalBayes
+		cv::Ptr<cv::ml::NormalBayesClassifier> classifier = cv::ml::NormalBayesClassifier::load(path);
 
 		try {
 
@@ -127,10 +127,10 @@ namespace decision_tree_connector {
 				cv::Mat trans_mat = test_mat.t(); //1 row - 4 cols
 
 												  //Predict distance
-				float distance = tree->predict(trans_mat, cv::noArray(), true); //Returns distance from plane
-																			   //float distance = tree->predict(trans_mat); //Returns decision
+				float distance = classifier->predict(trans_mat, cv::noArray(), true); //Returns distance from plane
+																				//float distance = tree->predict(trans_mat); //Returns decision
 
-																			   //Adds Distance to results vector
+																				//Adds Distance to results vector
 				results.push_back(distance);
 			}
 		}
@@ -142,12 +142,12 @@ namespace decision_tree_connector {
 	}
 
 	bool test_signature(int userID, Signature to_check, float threshold) {
-		//Loads path where Tree are stored
-		std::string path = "Classifiers/DTrees/" + std::to_string(userID) + ".xml";
+		//Loads path where NormalBayes are stored
+		std::string path = "Classifiers/NBayes/" + std::to_string(userID) + ".xml";
 		//std::string path = load_model(userID);
 
 		//Computes distance for each instant
-		std::vector<float> distances = decision_tree_connector::compute_distances(userID, to_check, path);
+		std::vector<float> distances = normalbayes_connector::compute_distances(userID, to_check, path);
 
 		int accepted_count = 0;
 		int rejected_count = 0;
@@ -180,6 +180,6 @@ namespace decision_tree_connector {
 		//Get Threshold from DB
 		float threshold = get_threshold(userID);
 		//Call test_signature
-		return decision_tree_connector::test_signature(userID, to_check, threshold);
+		return normalbayes_connector::test_signature(userID, to_check, threshold);
 	}
 }

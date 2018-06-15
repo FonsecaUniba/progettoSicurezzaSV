@@ -29,7 +29,7 @@ namespace svm_connector{
 
 		to_train - User to train the system for
 	*/
-	void train_svm(User to_train);
+	void train_classifier(User to_train);
 
 	/*
 		Given a Signature and a user id,

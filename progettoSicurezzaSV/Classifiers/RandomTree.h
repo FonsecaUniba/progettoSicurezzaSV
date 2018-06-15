@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef DECISIONTREE_CONNECTOR
-#define DECISIONTREE_CONNECTOR
+#ifndef RANDOMTREE_CONNECTOR
+#define RANDOMTREE_CONNECTOR
 
 #include <vector>
 #include <opencv2/core/core.hpp>
@@ -15,9 +15,9 @@
 #include "../Signature/Signature.h"
 #include "../Signature/Instant.h"
 
-namespace decision_tree_connector {
+namespace randomtree_connector {
 	/*
-	Functions used to interact with OpenCV DecisionTree Library
+	Functions used to interact with OpenCV RandomTree Library
 
 	Author: Nicola Oreste Fonseca
 	Created on: 26 December 2017
@@ -25,7 +25,7 @@ namespace decision_tree_connector {
 
 	/*
 	Trains the System to recognize an User
-	The DecisionTree will be saved in /DTrees/[UserID].xml
+	The RandomTree will be saved in /RTrees/[UserID].xml
 
 	to_train - User to train the system for
 	*/
@@ -65,4 +65,4 @@ namespace decision_tree_connector {
 	bool test_signature(int userID, Signature to_check);
 }
 
-#endif //DECISIONTREE_CONNECTOR
+#endif //RANDOMTREE_CONNECTOR

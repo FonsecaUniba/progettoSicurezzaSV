@@ -157,6 +157,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Classifiers\DecisionTree.h" />
+    <ClInclude Include="Classifiers\GradientBoostedTree.h" />
+    <ClInclude Include="Classifiers\NeuralNetwork.h" />
+    <ClInclude Include="Classifiers\NormalBayes.h" />
+    <ClInclude Include="Classifiers\RandomTree.h" />
     <ClInclude Include="Classifiers\stdafx.h" />
     <ClInclude Include="Classifiers\SVMConnector.h" />
     <ClInclude Include="InputOutput\FileInput.h" />
@@ -177,6 +181,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Classifiers\DecisionTree.cpp" />
+    <ClCompile Include="Classifiers\GradientBoostedTree.cpp" />
+    <ClCompile Include="Classifiers\NeuralNetwork.cpp" />
+    <ClCompile Include="Classifiers\NormalBayes.cpp" />
+    <ClCompile Include="Classifiers\RandomTree.cpp" />
     <ClCompile Include="Classifiers\SVMConnector.cpp" />
     <ClCompile Include="InputOutput\FileInput.cpp" />
     <ClCompile Include="InputOutput\DBConnector.cpp" />

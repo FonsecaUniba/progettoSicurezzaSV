@@ -96,6 +96,18 @@
     <ClInclude Include="Classifiers\SVMConnector.h">
       <Filter>File di intestazione\Classifiers</Filter>
     </ClInclude>
+    <ClInclude Include="Classifiers\NeuralNetwork.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="Classifiers\NormalBayes.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="Classifiers\RandomTree.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="Classifiers\GradientBoostedTree.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -136,6 +148,18 @@
     </ClCompile>
     <ClCompile Include="Classifiers\DecisionTree.cpp">
       <Filter>File di origine\Classifiers</Filter>
+    </ClCompile>
+    <ClCompile Include="Classifiers\NeuralNetwork.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="Classifiers\NormalBayes.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="Classifiers\RandomTree.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="Classifiers\GradientBoostedTree.cpp">
+      <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
