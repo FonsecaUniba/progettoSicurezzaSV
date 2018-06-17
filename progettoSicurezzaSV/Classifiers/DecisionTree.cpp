@@ -39,9 +39,9 @@ namespace decision_tree_connector {
 	}
 
 	void train_classifier(User to_train) {
-
+		
 		//Stores User ID
-		int id = to_train.get_id();
+		int id = to_train.get_id();  //This instruction doesn't work even though it works in other classifiers which are derived from this one
 
 		//Label and Training Vector
 		std::vector<int> label_vector;

@@ -79,13 +79,33 @@ namespace neuralnetwork_connector {
 			//Converts the two mats to the type supported by the DecisionTree trainer
 			labels_mat.convertTo(labels_mat, CV_32S);
 			training_mat.convertTo(training_mat, CV_32F);
-			//Declares Training Data using training_mat and labels_mat
-			cv::Ptr<cv::ml::TrainData> td = cv::ml::TrainData::create(training_mat, cv::ml::ROW_SAMPLE, labels_mat);
 
 			//Sets up NeuralNetwork Classifier
 			cv::Ptr<cv::ml::ANN_MLP> classifier = cv::ml::ANN_MLP::create();
-			//Trains NeuralNetwork Classifier
-			classifier->train(td);
+
+			cv::Mat_<int> layers(4, 1);
+			int nfeatures = training_mat.cols;
+			int nclasses = 2;	//Forgery or Genuine
+			layers(0) = nfeatures;     // input
+			layers(1) = nclasses * 8;  // hidden
+			layers(2) = nclasses * 4;  // hidden
+			layers(3) = nclasses;      // output, 1 pin per class.
+			classifier->setLayerSizes(layers);
+			classifier->setActivationFunction(cv::ml::ANN_MLP::SIGMOID_SYM, 0, 0);
+			classifier->setTermCriteria(cv::TermCriteria(cv::TermCriteria::MAX_ITER + cv::TermCriteria::EPS, 300, 0.0001));
+			classifier->setTrainMethod(cv::ml::ANN_MLP::BACKPROP, 0.0001);
+
+			//Sets up training data
+			// ann requires "one-hot" encoding of class labels:
+			cv::Mat train_classes = cv::Mat::zeros(training_mat.rows, nclasses, CV_32FC1);
+			for (int i = 0; i<train_classes.rows; i++)
+			{
+				train_classes.at<float>(i, labels_mat.at<int>(i)) = 1.f;
+			}
+			std::cerr << training_mat.size() << " " << train_classes.size() << std::endl;
+
+			//Trains Neural Network Classifier
+			classifier->train(training_mat, cv::ml::ROW_SAMPLE, train_classes);
 
 			//Sets NeuralNetwork save path
 			std::string path = "Classifiers/NNetwork/" + std::to_string(id) + ".xml";
