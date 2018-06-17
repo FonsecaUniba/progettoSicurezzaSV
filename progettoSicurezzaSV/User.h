@@ -17,6 +17,11 @@ class User
 	*/
 
 public:
+	// User ID
+	int id;
+	// User's acceptance threshold (Default value 0.70)
+	float threshold;
+
 	/*
 		Constuctor for Class User
 
@@ -46,12 +51,6 @@ public:
 		Vector containing all User's Signatures
 	*/
 	std::vector<Signature> user_signatures;
-
-private:
-	// User ID
-	int id;
-	// User's acceptance threshold (Default value 0.70)
-	float threshold;
 };
 
 #endif //USER_CLASS

@@ -109,13 +109,6 @@ namespace neuralnetwork_connector {
 
 			//Sets NeuralNetwork save path
 			std::string path = "Classifiers/NNetwork/" + std::to_string(id) + ".xml";
-			if (boost::filesystem::exists(path)) {
-				boost::filesystem::path dir(path);
-				if (boost::filesystem::create_directory(dir))
-				{
-					std::cerr << "Directory Created" << std::endl;
-				}
-			}
 			//Save NeuralNetwork to file
 			classifier->save(path);
 			//Store NeuralNetwork path on DB Currently disabled

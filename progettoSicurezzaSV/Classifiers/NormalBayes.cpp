@@ -39,10 +39,6 @@ namespace normalbayes_connector {
 	}
 
 	void train_classifier(User to_train) {
-
-		//Stores User ID
-		int id = to_train.get_id();
-
 		//Label and Training Vector
 		std::vector<int> label_vector;
 		std::vector<std::vector<float>> training_vector;
@@ -88,14 +84,7 @@ namespace normalbayes_connector {
 			classifier->train(td);
 
 			//Sets NormalBayes save path
-			std::string path = "Classifiers/NBayes/" + std::to_string(id) + ".xml";
-			if (boost::filesystem::exists(path)) {
-				boost::filesystem::path dir(path);
-				if (boost::filesystem::create_directory(dir))
-				{
-					std::cerr << "Directory Created" << std::endl;
-				}
-			}
+			std::string path = "Classifiers/NBayes/" + std::to_string(to_train.id) + ".xml";
 			//Save NormalBayes to file
 			classifier->save(path);
 			//Store NormalBayes path on DB Currently disabled

@@ -156,7 +156,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Classifiers\DecisionTree.h" />
     <ClInclude Include="Classifiers\GradientBoostedTree.h" />
     <ClInclude Include="Classifiers\NeuralNetwork.h" />
     <ClInclude Include="Classifiers\NormalBayes.h" />
@@ -180,7 +179,6 @@
     <ClInclude Include="User.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Classifiers\DecisionTree.cpp" />
     <ClCompile Include="Classifiers\GradientBoostedTree.cpp" />
     <ClCompile Include="Classifiers\NeuralNetwork.cpp" />
     <ClCompile Include="Classifiers\NormalBayes.cpp" />

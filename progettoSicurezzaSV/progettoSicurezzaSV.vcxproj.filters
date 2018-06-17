@@ -90,9 +90,6 @@
     <ClInclude Include="Classifiers\stdafx.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
-    <ClInclude Include="Classifiers\DecisionTree.h">
-      <Filter>File di intestazione\Classifiers</Filter>
-    </ClInclude>
     <ClInclude Include="Classifiers\SVMConnector.h">
       <Filter>File di intestazione\Classifiers</Filter>
     </ClInclude>
@@ -144,9 +141,6 @@
       <Filter>File di origine\Signature</Filter>
     </ClCompile>
     <ClCompile Include="Classifiers\SVMConnector.cpp">
-      <Filter>File di origine\Classifiers</Filter>
-    </ClCompile>
-    <ClCompile Include="Classifiers\DecisionTree.cpp">
       <Filter>File di origine\Classifiers</Filter>
     </ClCompile>
     <ClCompile Include="Classifiers\NeuralNetwork.cpp">
