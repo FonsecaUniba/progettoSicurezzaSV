@@ -42,7 +42,7 @@ namespace svm_connector{
 		to_check - Signature to predict
 		path - Path where SVM model is stored
 	*/
-	std::vector<float> compute_distances(int userID, Signature to_check, std::string path);
+	float compute_distances(int userID, Signature to_check, std::string path);
 
 	/*
 		Tests a user signature at a given

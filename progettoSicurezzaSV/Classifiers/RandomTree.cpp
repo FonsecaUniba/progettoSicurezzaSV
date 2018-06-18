@@ -95,9 +95,9 @@ namespace randomtree_connector {
 		}
 	}
 
-	std::vector<float> compute_distances(int userID, Signature to_check, std::string path) {
+	float compute_distances(int userID, Signature to_check, std::string path) {
 		//Vector to store distances
-		std::vector<float> results;
+		float result;
 		//Vector to store instant
 		std::vector<float> instant_vector;
 
@@ -105,29 +105,37 @@ namespace randomtree_connector {
 		cv::Ptr<cv::ml::RTrees> tree = cv::ml::RTrees::load(path);
 
 		try {
+			cv::Mat_<float> test_mat;
+			std::vector<std::vector<float>> test_vector;
 
-			//Pad Signature to given length
+			//Pad the signature to a given size and stores data
 			std::vector<std::vector<float>> signature_data = padding(to_check);
-			//For each element in the signature
-			for (int i = 0; i < signature_data.size(); i++) {
-				//Creates Mat to test
-				cv::Mat test_mat(signature_data.at(i), true); //4 rows - 1 col
-				test_mat.convertTo(test_mat, CV_32F);
-				cv::Mat trans_mat = test_mat.t(); //1 row - 4 cols
-
-												  //Predict distance
-				float distance = tree->predict(trans_mat, cv::noArray(), true); //Returns distance from plane
-																				//float distance = tree->predict(trans_mat); //Returns decision
-
-																				//Adds Distance to results vector
-				results.push_back(distance);
+			//For every element in the signature
+			for (int j = 0; j < signature_data.size(); j++) {
+				//Add element to training_vector
+				test_vector.push_back(signature_data.at(j));
 			}
+
+			//Copies data from training_vector to trainig_mat
+			for (const auto & v : test_vector)
+			{
+				cv::Mat_<float> r(v), t = r.t(); // you need to do this
+				test_mat.push_back(t); // because push_back(Mat_<float>(v).t()) does not work
+			}
+
+			test_mat.convertTo(test_mat, CV_32F);
+			cv::Mat trans_mat = test_mat.t(); //1 row - 4 cols
+			cv::Mat receivedResponses;
+			result = tree->predict(trans_mat, receivedResponses); //Returns distance from plane
+																	//float distance = tree->predict(trans_mat); //Returns decision
+			float result = cv::mean(receivedResponses).val[0];
+			result = 1.0 / (1.0 + exp(-result));
 		}
 		catch (cv::Exception &e) {
 			std::cout << e.what() << std::endl;
 		}
 
-		return results;
+		return result;
 	}
 
 	bool test_signature(int userID, Signature to_check, float threshold) {
@@ -135,34 +143,10 @@ namespace randomtree_connector {
 		std::string path = "Classifiers/RTrees/" + std::to_string(userID) + ".xml";
 		//std::string path = load_model(userID);
 
-		//Computes distance for each instant
-		std::vector<float> distances = randomtree_connector::compute_distances(userID, to_check, path);
+		//Computes confidence for each instant
+		float confidence = randomtree_connector::compute_distances(userID, to_check, path);
 
-		int accepted_count = 0;
-		int rejected_count = 0;
-
-		/*
-		Determine if Signature is accepted by checking
-		if distance from hyperplane for each point is
-		greater than threshold
-		*/
-		for (int i = 0; i < distances.size(); i++) {
-			double confidence = 1.0 / (1.0 + exp(-distances.at(i)));
-
-			//Instant is accepted 
-			if (confidence > threshold) {
-				accepted_count++;
-				//Possible plotting
-			}
-			//Instant is rejected
-			else {
-				rejected_count++;
-				//Possible plotting
-			}
-		}
-
-		//Return decision based on majority
-		return (accepted_count > rejected_count) ? true : false;
+		return (confidence > threshold) ? true : false;
 	}
 
 	bool test_signature(int userID, Signature to_check) {
